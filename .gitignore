@@ -89,7 +89,7 @@ ENV/
 .ropeproject
 
 # Database data
-docker/db/pgdata/
+docker/db/
 
 # IDE folder
 .idea/
