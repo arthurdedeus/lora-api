@@ -41,6 +41,16 @@ if __name__ == "__main__":
         merge_mysql_branch = "git merge origin/mysql"
         os.system(merge_mysql_branch)
 
+    # Auth
+    auth = ''
+    while auth not in ['1']:
+        auth = input("What is the authentication system?\n1: Rest Auth without socials\n")
+
+    if auth == '1':
+        print('Adding rest auth without socials')
+        merge_auth_branch = "git merge origin/auth"
+        os.system(merge_auth_branch)
+
     print('Finalizing setup')
     merge_dev_branch = "git checkout master && git merge dev"
     os.system(merge_dev_branch)
