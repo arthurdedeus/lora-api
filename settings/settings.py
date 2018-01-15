@@ -71,8 +71,19 @@ INSTALLED_APPS = [
     # Storage
     'storages',
 
+    # Rest Auth
+    'rest_auth',
+    'rest_auth.registration',
+
+    # Allauth
+    'allauth',
+    'allauth.account',
+
     # Cors
     'corsheaders',
+
+    # Applications
+    'accounts',
 ]
 
 SITE_ID = 1
@@ -175,6 +186,16 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+REST_AUTH_SERIALIZERS = {
+    'TOKEN_SERIALIZER': 'accounts.api.v1.serializers.UserTokenSerializer',
+    'PASSWORD_RESET_SERIALIZER': 'accounts.api.v1.serializers.PasswordResetSerializer',
+}
+
+###
+# Change Password
+###
+OLD_PASSWORD_FIELD_ENABLED = True
+
 ###
 # CORS
 ###
@@ -253,3 +274,18 @@ LOGGING = {
         },
     },
 }
+
+
+###
+# FE Settings
+###
+FE_URL = os.environ.get('FE_URL')
+
+###
+# Email Backend
+###
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+if not DEBUG and ENVIRONMENT != 'test':
+    EMAIL_BACKEND = 'django_amazon_ses.EmailBackend'
+    AWS_DEFAULT_REGION = 'us-west-2'

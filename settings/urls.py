@@ -20,4 +20,5 @@ urlpatterns = [
     url(r'health-check/$', health_check, name='health_check'),
 
     # Applications
+    url(r'^', include('accounts.urls')),
 ]
