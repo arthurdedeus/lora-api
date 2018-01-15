@@ -290,7 +290,6 @@ LOGGING = {
     },
 }
 
-
 ###
 # FE Settings
 ###
