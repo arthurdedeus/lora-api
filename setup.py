@@ -34,11 +34,11 @@ if __name__ == "__main__":
 
     if database == '1':
         print('Adding postgres')
-        merge_postgres_branch = "git merge origin/postgres"
+        merge_postgres_branch = "git merge origin/postgres --no-edit"
         os.system(merge_postgres_branch)
     elif database == '2':
         print('Adding mysql')
-        merge_mysql_branch = "git merge origin/mysql"
+        merge_mysql_branch = "git merge origin/mysql --no-edit"
         os.system(merge_mysql_branch)
 
     # Auth
@@ -48,9 +48,9 @@ if __name__ == "__main__":
 
     if auth == '1':
         print('Adding rest auth without socials')
-        merge_auth_branch = "git merge origin/auth"
+        merge_auth_branch = "git merge origin/auth --no-edit"
         os.system(merge_auth_branch)
 
     print('Finalizing setup')
-    merge_dev_branch = "git checkout master && git merge dev"
+    merge_dev_branch = "git checkout master && git merge dev --no-edit && rm -rf .git"
     os.system(merge_dev_branch)
