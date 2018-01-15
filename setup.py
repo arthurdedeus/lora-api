@@ -52,5 +52,5 @@ if __name__ == "__main__":
         os.system(merge_auth_branch)
 
     print('Finalizing setup')
-    merge_dev_branch = "git checkout master && git merge dev --no-edit && rm -rf .git"
+    merge_dev_branch = "git checkout master && git merge dev --no-edit && rm -rf .git && rm -rf setup.py"
     os.system(merge_dev_branch)
