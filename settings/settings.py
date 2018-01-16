@@ -79,6 +79,9 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
 
+    # Social Applications
+    'allauth.socialaccount',
+
     # Cors
     'corsheaders',
 
@@ -185,6 +188,7 @@ REST_FRAMEWORK = {
 AUTH_USER_MODEL = 'accounts.User'
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 )
 
 REST_AUTH_SERIALIZERS = {
@@ -196,6 +200,11 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_ADAPTER = os.environ.get('ACCOUNT_ADAPTER', 'allauth.account.adapter.DefaultAccountAdapter')
+SOCIALACCOUNT_EMAIL_VERIFICATION = os.environ.get('SOCIALACCOUNT_EMAIL_VERIFICATION', 'none')
+
+SOCIALACCOUNT_PROVIDERS = {
+}
 
 ###
 # Change Password
