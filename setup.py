@@ -30,11 +30,11 @@ if __name__ == "__main__":
     # Database
     database = ''
     while database not in ['1', '2']:
-        database = input(
+        database = str(input(
             "What is the database?\n"
             "1: POSTGRES\n"
             "2: MYSQL\n"
-        )
+        ))
 
     if database == '1':
         print('Adding postgres')
@@ -48,11 +48,11 @@ if __name__ == "__main__":
     # Auth
     auth = ''
     while auth not in ['1', '2']:
-        auth = input(
+        auth = str(input(
             "What is the authentication system?\n"
             "1: Rest Auth without socials\n"
             "2: Rest Auth with socials\n"
-        )
+        ))
 
     if auth == '1':
         print('Adding rest auth without socials')
@@ -66,12 +66,12 @@ if __name__ == "__main__":
 
         provider = ''
         while provider not in ['1', '2', '3']:
-            provider = input(
+            provider = str(input(
                 "What are the providers?\n"
                 "1: Facebook\n"
                 "2: Google\n"
                 "3: Facebook + Google\n"
-            )
+            ))
 
         if provider == '1':
             print('Adding facebook provider')
