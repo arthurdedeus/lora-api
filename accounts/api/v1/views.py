@@ -19,7 +19,9 @@ from rest_framework import (
     generics,
 )
 from rest_framework.response import Response
+from rest_auth.registration.views import SocialLoginView
 
+from accounts.custom_providers import CustomFacebookOAuth2Adapter, CustomGoogleOAuth2Adapter
 from accounts.models import (
     ChangeEmailRequest,
 )
@@ -97,3 +99,11 @@ class ChangeEmailConfirmationViewSet(generics.GenericAPIView):
 
             change_request.delete()
         return render_to_response('account/change_email_done.html', {'first_name': user.first_name})
+
+
+class FacebookLogin(SocialLoginView):
+    adapter_class = CustomFacebookOAuth2Adapter
+
+
+class GoogleLogin(SocialLoginView):
+    adapter_class = CustomGoogleOAuth2Adapter
