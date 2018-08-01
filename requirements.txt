@@ -24,3 +24,4 @@ django-cors-headers==2.1.0
 
 # Project Dependencies
 requests==2.18.4
+raven==6.5.0
