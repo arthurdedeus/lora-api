@@ -65,6 +65,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
 
+    # Storage
+    'storages',
+
     # Cors
     'corsheaders',
 ]
@@ -133,6 +136,16 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+###
+# Storage
+###
+if ENVIRONMENT != 'test':
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+    AWS_AUTO_CREATE_BUCKET = True
+    AWS_IS_GZIPPED = True
+    if DEBUG:
+        AWS_S3_ENDPOINT_URL = 'http://localhost:4572/'
 
 ###
 # Rest Framework
