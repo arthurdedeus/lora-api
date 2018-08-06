@@ -47,15 +47,12 @@ Once the setup is done, you'll be able to run the backend:
 - Run the server
 
 You need a `.env`file with your environment variables, here's an example file:
-
-```JSON
-{
-"LOAD_ENVS_FROM_FILE": true,
-"ENVIRONMENT": "development",
-"SECRET_KEY": "#*=JungleBoilerplate=*#",
-"DEFAULT_FROM_EMAIL": "Boilerplate <boilerplate@jungledevs.com>",
-"DATABASE_URL": "postgres://postgres:postgres@localhost:5432/boilerplate-django",
-"SENTRY_DSN": "{sentry_key}",
-"AWS_STORAGE_BUCKET_NAME": "django-be",
-}
+```
+LOAD_ENVS_FROM_FILE='True'
+ENVIRONMENT='development'
+SECRET_KEY='#*=JungleDjangoBoilerplate=*#'
+DEFAULT_FROM_EMAIL='Boilerplate <boilerplate@jungledevs.com>'
+DATABASE_URL='postgres://postgres:postgres@localhost:5432/boilerplate-django'
+SENTRY_DSN='{sentry_key}'
+AWS_STORAGE_BUCKET_NAME='django-be'
 ```
