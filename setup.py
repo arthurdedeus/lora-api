@@ -16,6 +16,12 @@ def signal_handler(signal, frame):
     os.system(delete_dev_branch)
     sys.exit(0)
 
+###
+# Constants
+###
+CURR_DIR = os.getcwd()
+NON_BOILERPLATE_FOLDERS = ['/.git', '/.vscode', '/.idea']
+NON_BP_FLD_PATH = [CURR_DIR + fld for fld in NON_BOILERPLATE_FOLDERS]
 
 ###
 # Setup boilerplate
@@ -87,6 +93,29 @@ if __name__ == "__main__":
             print('Adding facebook and google providers')
             merge_provider_branch = "git merge origin/auth-social-facebook-google --no-edit"
             os.system(merge_provider_branch)
+
+    if sys.version_info[0] < 3:
+        name = raw_input('What is the project name (no spaces)?\n')
+    else:
+        name = input('What is the project name (no spaces)?\n')
+
+    if name:
+        print('Customizing the boilerplate')
+
+        for root, dirs, files in os.walk(CURR_DIR):
+            check_substring = [1 for folder in NON_BP_FLD_PATH if folder in root]
+            if sum(check_substring) == 0:
+                for filename in files:
+                    if 'setup.py' not in filename:
+                        file = open(root + '/' + filename, 'r')
+                        text = str(file.read())
+                        file.close()
+                        text = text.replace('Django Boilerplate', name)
+                        text = text.replace('boilerplate-django', name.lower() + '-django')
+                        text = text.replace('Boilerplate', name)
+                        file = open(root + '/' + filename, 'w')
+                        file.write(text)
+                        file.close()
 
     print('Finalizing setup')
     merge_dev_branch = "git checkout master && " \
