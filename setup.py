@@ -94,6 +94,8 @@ if __name__ == "__main__":
             merge_provider_branch = "git merge origin/auth-social-facebook-google --no-edit"
             os.system(merge_provider_branch)
 
+    checkout_master = "git checkout master && git merge dev --no-edit"
+    os.system(checkout_master)
     if sys.version_info[0] < 3:
         name = raw_input('What is the project name (no spaces)?\n')
     else:
@@ -118,8 +120,6 @@ if __name__ == "__main__":
                         file.close()
 
     print('Finalizing setup')
-    merge_dev_branch = "git checkout master && " \
-                       "git merge dev --no-edit && " \
-                       "rm -rf .git && " \
+    merge_dev_branch = "rm -rf .git && " \
                        "rm -rf setup.py"
     os.system(merge_dev_branch)
