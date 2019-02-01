@@ -6,7 +6,7 @@ Accounts Models
 ###
 import uuid
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import ugettext as _
 
@@ -24,6 +24,11 @@ from django.utils.translation import ugettext as _
 ###
 # Models
 ###
+class User(AbstractUser):
+    # Override user model here
+    pass
+
+
 class ChangeEmailRequest(models.Model):
     # Helpers
     uuid = models.UUIDField(
