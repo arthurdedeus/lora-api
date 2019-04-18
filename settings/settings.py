@@ -146,6 +146,8 @@ if ENVIRONMENT != 'test':
     AWS_IS_GZIPPED = True
     if DEBUG:
         AWS_S3_ENDPOINT_URL = 'http://localhost:4572/'
+        AWS_SECRET_ACCESS_KEY = 'foo'
+        AWS_ACCESS_KEY_ID = 'foo'
 
 ###
 # Rest Framework
@@ -179,7 +181,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 if ENVIRONMENT != 'test':
     RAVEN_CONFIG = {
-        'dsn': os.environ.get('RAVEN_DSN', ''),
+        'dsn': os.environ.get('SENTRY_DSN', ''),
     }
 
 
