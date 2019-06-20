@@ -1,12 +1,12 @@
 # Django
-Django==2.1.8
+Django==2.1.9
 
 # Envs
 django-dotenv==1.4.2
 s3-environ==0.0.5
 
 # Rest Framework
-djangorestframework==3.7.7
+djangorestframework==3.9.3
 django-filter==1.1.0
 
 # Routers
