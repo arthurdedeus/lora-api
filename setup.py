@@ -119,6 +119,47 @@ if __name__ == "__main__":
                         file.write(text)
                         file.close()
 
+    readme_file = open('README.md', 'w+')
+    if name:
+        readme_name = f'{name} Django'
+    else:
+        readme_name = 'Django Project'
+    readme_file.write(
+        f'''
+        # {readme_name}
+
+        ## Requirements
+
+        - [Python 3.6](https://www.python.org)
+        - [Docker](https://www.docker.com)
+        - [Docker Compose](https://docs.docker.com/compose/)
+        - [Virtualenv](https://github.com/pypa/virtualenv/)
+        - [Git](https://git-scm.com/)
+
+        ## Development
+
+        - Create the virtual environment and activate it
+
+                virtualenv -p Python3.6 venv
+                source venv/bin/activate
+        - Install the requirements `pip install -r requirements.txt`
+        - Start the dockers `docker-compose up` with the database and the localstack
+        - Run the server with `python manage.py runserver 8000`
+
+        You need a `.env`file with your environment variables, here's an example file:
+        ```
+        LOAD_ENVS_FROM_FILE='True'
+        ENVIRONMENT='development'
+        SECRET_KEY='#*=JungleDjangoBoilerplate=*#'
+        DEFAULT_FROM_EMAIL='Boilerplate <boilerplate@jungledevs.com>'
+        DATABASE_URL='postgres://postgres:postgres@localhost:5432/boilerplate'
+        SENTRY_DSN='sentry_key'
+        AWS_STORAGE_BUCKET_NAME='django-be'
+        ```
+        '''
+    )
+    readme_file.close()
+
     print('Finalizing setup')
     merge_dev_branch = "rm -rf .git && " \
                        "rm -rf setup.py"
