@@ -9,7 +9,10 @@ import requests
 
 import dj_database_url
 import dotenv
+import sentry_sdk
+
 from s3_environ import S3Environ
+from sentry_sdk import DjangoIntegration
 
 ###
 # Get data from .env file
@@ -145,6 +148,7 @@ if ENVIRONMENT != 'test':
     AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
     AWS_AUTO_CREATE_BUCKET = True
     AWS_IS_GZIPPED = True
+    AWS_QUERYSTRING_AUTH = False
     if DEBUG:
         AWS_S3_ENDPOINT_URL = 'http://localhost:4572/'
         AWS_SECRET_ACCESS_KEY = 'foo'
@@ -179,11 +183,18 @@ CORS_ORIGIN_ALLOW_ALL = True
 ###
 # Sentry & Logging
 ###
+if not DEBUG and ENVIRONMENT != 'test':
+    def before_send(event, hint):
+        # Ignore disallowed hosts
+        if event.get('logger') == 'django.security.DisallowedHost':
+            return None
+        return event
 
-if ENVIRONMENT != 'test':
-    RAVEN_CONFIG = {
-        'dsn': os.environ.get('SENTRY_DSN', ''),
-    }
+    sentry_sdk.init(
+        dsn=os.environ.get('SENTRY_DSN'),
+        integrations=[DjangoIntegration()],
+        before_send=before_send,
+    )
 
 
 LOGGING = {
