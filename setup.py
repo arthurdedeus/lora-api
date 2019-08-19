@@ -125,8 +125,7 @@ if __name__ == "__main__":
     else:
         readme_name = 'Django Project'
     readme_file.write(
-        f'''
-# {readme_name}
+        f'''# {readme_name}
 
 ## Requirements
 
