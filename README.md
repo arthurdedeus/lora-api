@@ -1,11 +1,11 @@
 # Django Boilerplate
 
 This is the JungleDevs boilerplate for Django Applications. \
-It uses Django 2.1.9 + Docker. Two options of databases are currently supported. The basic structure for authentication is provided, as well as the support for authentication using social accounts. We are also using [localstack](https://github.com/localstack/localstack) to emulate AWS S3 services.
+It uses Django 2.2.4 + Docker. Two options of databases are currently supported. The basic structure for authentication is provided, as well as the support for authentication using social accounts. We are also using [localstack](https://github.com/localstack/localstack) to emulate AWS S3 services.
 
 ## Requirements
 
-- [Python 3.6](https://www.python.org)
+- [Python 3.7](https://www.python.org)
 - [Docker](https://www.docker.com)
 - [Docker Compose](https://docs.docker.com/compose/)
 - [Virtualenv](https://github.com/pypa/virtualenv/)
@@ -40,7 +40,7 @@ Once the setup is done, you'll be able to run the backend:
 
 - Create the virtual environment and activate it
 
-        virtualenv -p Python3.6 venv
+        virtualenv -p python3 venv
         source venv/bin/activate
 - Install the requirements `pip install -r requirements.txt`
 - Start the dockers `docker-compose up`
