@@ -12,7 +12,7 @@ import dotenv
 import sentry_sdk
 
 from s3_environ import S3Environ
-from sentry_sdk import DjangoIntegration
+from sentry_sdk.integrations.django import DjangoIntegration
 
 ###
 # Get data from .env file
