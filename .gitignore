@@ -97,3 +97,6 @@ docker/db/
 # Flake 8
 .flake8
 
+# Terraform
+infrastructure/.terraform
+
