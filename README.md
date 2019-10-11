@@ -56,3 +56,37 @@ DATABASE_URL='postgres://postgres:postgres@localhost:5432/boilerplate'
 SENTRY_DSN='{sentry_key}'
 AWS_STORAGE_BUCKET_NAME='django-be'
 ```
+
+## Deploy
+This project is configured to use Terraform (https://www.terraform.io/) to create the
+infrastructure in AWS. You must install the CLI: https://www.terraform.io/downloads.html
+The following resources must be created manually:
+        - S3 bucket to hold terraform state
+        - EC2 key pair
+        - HTTPS certificate
+
+After creating the required resources, you need to update the the following fields inside `main.tf`:
+        - terraform.backend.bucket
+        - locals.project
+        - locals.certificate_arn
+        - locals.key_name
+
+*  You can also change the region and aws machine instance type once needed.
+
+To deploy to the staging environment run:
+```
+cd infrastructure
+terraform init
+terraform workspace select staging
+terraform apply
+```
+
+To create a new environment run:
+```
+terraform workspace new ENV_NAME
+```
+
+Use terraform's format option before committing changes:
+```
+terraform fmt --recursive
+```
