@@ -213,7 +213,7 @@ LOGGING = {
     'handlers': {
         'sentry': {
             'level': 'ERROR',
-            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+            'class': 'sentry_sdk.integrations.logging.EventHandler',
         },
         'console': {
             'level': 'DEBUG',
