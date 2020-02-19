@@ -94,6 +94,6 @@ AWS_STORAGE_BUCKET_NAME='django-be'
 
     print('Finalizing setup')
     merge_dev_branch = "rm -rf .git && " \
-                       "rm -rf setup.py" \
+                       "rm -rf setup.py &&" \
                        "mv env.example .env"
     os.system(merge_dev_branch)
