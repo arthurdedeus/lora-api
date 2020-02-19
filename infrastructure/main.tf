@@ -1,11 +1,11 @@
 provider "aws" {
-  version = "~>2.0"
+  version = "~>2"
   region  = "us-east-1"
 }
 
 terraform {
   backend "s3" {
-    bucket  = "<bucket-name>"
+    bucket  = "boilerplate-backend-terraform"
     key     = "terraform.tfstate"
     region  = "us-east-1"
     encrypt = true
@@ -13,35 +13,36 @@ terraform {
 }
 
 locals {
-  project         = "<project-name>"
+  project         = "boilerplate"
   region          = "us-east-1"
-  certificate_arn = "<certificate-arn>"
-  instance_type   = "t2.micro"
-  key_name        = "<keyname>"
+  certificate_arn = "" #TODO: Your certificate ARN here
+  keypair         = "boilerplate-keypair"
 
-  staging_db_config = {
-    instance_class    = "db.t2.micro"
-    allocated_storage = 5
-    delete_protection = false
+  staging_config = {
+    ec2_instance_type    = "t2.micro"
+    db_instance_class    = "db.t2.micro"
+    db_allocated_storage = 5
+    db_delete_protection = false
+    storage_cdn_domain = [
+      "images-staging.boilerplate.com",
+    ]
   }
 
-  prod_db_config = {
-    instance_class    = "db.t2.micro"
-    allocated_storage = 5
-    delete_protection = true
+  prod_config = {
+    ec2_instance_type    = "t2.micro"
+    db_instance_class    = "db.t2.micro"
+    db_allocated_storage = 5
+    delete_protection    = true
+    storage_cdn_domain = [
+      "images.boilerplate.com",
+    ]
   }
 
-  db_configs_all = {
-    "staging" : local.staging_db_config,
-    "prod" : local.prod_db_config,
+  configs = {
+    "staging" : local.staging_config,
+    "prod" : local.prod_config,
   }
-  db_config = lookup(local.db_configs_all, terraform.workspace, "staging")
-}
-
-
-resource "aws_s3_bucket" "env_bucket" {
-  bucket = "${local.project}-backend-envs"
-  acl    = "private"
+  config = lookup(local.configs, terraform.workspace, "staging")
 }
 
 module "vpc" {
@@ -64,9 +65,9 @@ module "ecs" {
   lb_target_group_arn = module.alb.this_target_group_arn
   security_group_ids  = [module.vpc.instances_security_group_id]
   subnet_ids          = module.vpc.this_subnet_ids
-  instance_type       = local.instance_type
+  instance_type       = local.config.ec2_instance_type
   region              = local.region
-  key_name            = local.key_name
+  key_name            = local.keypair
 }
 
 resource "random_string" "password" {
@@ -76,15 +77,21 @@ resource "random_string" "password" {
 }
 
 module "rds" {
-  source = "./RDS"
-
+  source                 = "./RDS"
   project                = local.project
-  instance_class         = local.db_config.instance_class
-  allocated_storage      = local.db_config.allocated_storage
-  delete_protection      = local.db_config.delete_protection
+  instance_class         = local.config.db_instance_class
+  allocated_storage      = local.config.db_allocated_storage
+  delete_protection      = local.config.db_delete_protection
   name                   = local.project
-  username               = "postgres"
+  username               = "root"
   password               = random_string.password.result
   vpc_security_group_ids = [module.vpc.rds_security_group_id]
   subnet_ids             = module.vpc.this_subnet_ids
+}
+
+module "storage" {
+  source          = "./Storage"
+  project         = local.project
+  cdn_domain      = local.config.storage_cdn_domain
+  certificate_arn = local.certificate_arn
 }

@@ -1,6 +1,6 @@
 variable "project" {
   description = "The project name"
-  type        = "string"
+  type        = string
 }
 
 variable "security_group_ids" {

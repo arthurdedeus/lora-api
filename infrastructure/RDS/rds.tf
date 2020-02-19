@@ -28,7 +28,7 @@ resource "aws_db_instance" "this" {
   port     = "5432"
   password = var.password
   lifecycle {
-    ignore_changes = ["password"]
+    ignore_changes = [password]
   }
 
   maintenance_window        = "Mon:00:00-Mon:02:00"

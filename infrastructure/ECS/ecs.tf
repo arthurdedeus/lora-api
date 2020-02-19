@@ -4,7 +4,7 @@ locals {
 
 # Docker image repository
 resource "aws_ecr_repository" "ecr" {
-  name = "${var.project}-django"
+  name = local.default_name
 
   tags = {
     Project     = var.project
@@ -67,7 +67,7 @@ resource "aws_ecs_cluster" "this" {
 
 # EC2 instance role and policies
 resource "aws_iam_role" "ecs-instance-role" {
-  name               = "ecs-instance-role"
+  name               = "${local.default_name}-instance-role"
   path               = "/"
   assume_role_policy = data.aws_iam_policy_document.ecs-instance-policy.json
 
@@ -130,6 +130,24 @@ resource "aws_autoscaling_group" "this" {
   lifecycle {
     create_before_destroy = true
   }
+
+  tags = [
+    {
+      key                 = "Project"
+      value               = var.project
+      propagate_at_launch = true
+    },
+    {
+      key                 = "Name"
+      value               = "${var.project} backend ${terraform.workspace}"
+      propagate_at_launch = true
+    },
+    {
+      key                 = "Environment"
+      value               = terraform.workspace
+      propagate_at_launch = true
+    },
+  ]
 }
 
 resource "aws_ecs_service" "this" {
