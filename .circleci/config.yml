@@ -65,7 +65,7 @@ jobs:
           - v1-dependencies-{{ checksum "requirements.txt" }}
       - run: sudo pip install ecs-deploy awscli
       - run: eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email | sed 's|https://||')
-      - run: docker build -t proteamgolf-django .
+      - run: docker build -t boilerplate-django .
       - run: docker tag boilerplate-django:latest $ECR_REPO_STAGING:staging
       - run: docker push $ECR_REPO_STAGING:staging
       - run: ecs deploy $AWS_CLUSTER_STAGING $AWS_SERVICE_STAGING --timeout $AWS_TIMEOUT
@@ -82,7 +82,7 @@ jobs:
       - run: sudo pip install ecs-deploy awscli
       - run: eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email | sed 's|https://||')
       - run: docker build -t boilerplate-django .
-      - run: docker tag proteamgolf-django:latest $ECR_REPO_PRODUCTION:$CIRCLE_TAG
+      - run: docker tag boilerplate-django:latest $ECR_REPO_PRODUCTION:$CIRCLE_TAG
       - run: docker push $ECR_REPO_PRODUCTION:$CIRCLE_TAG
       - run: ecs deploy -t $CIRCLE_TAG $AWS_CLUSTER_PRODUCTION $AWS_SERVICE_PRODUCTION --timeout $AWS_TIMEOUT
 
