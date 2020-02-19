@@ -29,9 +29,9 @@ NON_BP_FLD_PATH = [CURR_DIR + fld for fld in NON_BOILERPLATE_FOLDERS]
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, signal_handler)
     if sys.version_info[0] < 3:
-        name = raw_input('What is the project name (no spaces)?\n')
+        name = raw_input('What is the project name (no spaces, display name)?\n')
     else:
-        name = input('What is the project name (no spaces)?\n')
+        name = input('What is the project name (no spaces, display name)?\n')
 
     if name:
         print('Customizing the boilerplate')
@@ -44,10 +44,10 @@ if __name__ == "__main__":
                         file = open(root + '/' + filename, 'r')
                         text = str(file.read())
                         file.close()
-                        text = text.replace('Django Boilerplate', name.title())
+                        text = text.replace('Django Boilerplate', name)
                         text = text.replace('boilerplate-django', name.lower() + '-django')
                         text = text.replace('boilerplate', name.lower())
-                        text = text.replace('Boilerplate', name.title())
+                        text = text.replace('Boilerplate', name)
                         file = open(root + '/' + filename, 'w')
                         file.write(text)
                         file.close()
