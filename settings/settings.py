@@ -71,8 +71,24 @@ INSTALLED_APPS = [
     # Storage
     'storages',
 
+    # Rest Auth
+    'rest_auth',
+    'rest_auth.registration',
+
+    # Allauth
+    'allauth',
+    'allauth.account',
+
+    # Social Applications
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+
     # Cors
     'corsheaders',
+
+    # Applications
+    'accounts',
 ]
 
 SITE_ID = 1
@@ -171,9 +187,67 @@ REST_FRAMEWORK = {
 ###
 # Authentication
 ###
+AUTH_USER_MODEL = 'accounts.User'
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 )
+
+REST_AUTH_SERIALIZERS = {
+    'TOKEN_SERIALIZER': 'accounts.api.v1.serializers.UserTokenSerializer',
+    'PASSWORD_RESET_SERIALIZER': 'accounts.api.v1.serializers.PasswordResetSerializer',
+}
+
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_ADAPTER = os.environ.get('ACCOUNT_ADAPTER', 'allauth.account.adapter.DefaultAccountAdapter')
+SOCIALACCOUNT_EMAIL_VERIFICATION = os.environ.get('SOCIALACCOUNT_EMAIL_VERIFICATION', 'none')
+
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'METHOD': 'oauth2',
+        'SCOPE': [
+            'email',
+            'public_profile',
+            'user_friends',
+            'user_birthday',
+        ],
+        'FIELDS': [
+            'id',
+            'email',
+            'name',
+            'first_name',
+            'last_name',
+            'verified',
+            'locale',
+            'timezone',
+            'link',
+            'gender',
+            'updated_time',
+            'location',
+            'birthday',
+        ],
+        'EXCHANGE_TOKEN': True,
+        'VERIFIED_EMAIL': False,
+        'VERSION': 'v2.8',
+    },
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+    },
+}
+
+###
+# Change Password
+###
+OLD_PASSWORD_FIELD_ENABLED = True
 
 ###
 # CORS
@@ -253,3 +327,17 @@ LOGGING = {
         },
     },
 }
+
+###
+# FE Settings
+###
+FE_URL = os.environ.get('FE_URL')
+
+###
+# Email Backend
+###
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+if not DEBUG and ENVIRONMENT != 'test':
+    EMAIL_BACKEND = 'django_amazon_ses.EmailBackend'
+    AWS_DEFAULT_REGION = 'us-west-2'
