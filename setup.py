@@ -114,6 +114,7 @@ if __name__ == "__main__":
                         file.close()
                         text = text.replace('Django Boilerplate', name)
                         text = text.replace('boilerplate-django', name.lower() + '-django')
+                        text = text.replace('boilerplate', name.lower())
                         text = text.replace('Boilerplate', name)
                         file = open(root + '/' + filename, 'w')
                         file.write(text)
