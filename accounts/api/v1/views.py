@@ -11,7 +11,7 @@ from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.db import transaction
 from django.http import HttpRequest, Http404
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template.loader import render_to_string
 from rest_framework import (
     permissions,
@@ -94,11 +94,14 @@ class ChangeEmailConfirmationViewSet(generics.GenericAPIView):
         with transaction.atomic():
             user = change_request.user
             user.email = change_request.email
+            allauth_email = user.emailaddress_set.first()
+            allauth_email.email = change_request.email
             user.save(update_fields=['email'])
+            allauth_email.save(update_fields=['email'])
             user.auth_token.delete()
 
             change_request.delete()
-        return render_to_response('account/change_email_done.html', {'first_name': user.first_name})
+        return render('account/change_email_done.html', {'first_name': user.first_name})
 
 
 class FacebookLogin(SocialLoginView):
