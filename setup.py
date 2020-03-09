@@ -54,11 +54,11 @@ if __name__ == "__main__":
 
     readme_file = open('README.md', 'w+')
     if name:
-        readme_name = f'{name} Django'
+        readme_name = name + ' Django'
     else:
         readme_name = 'Django Project'
     readme_file.write(
-        f'''# {readme_name}
+        '''# {}
 
 ## Requirements
 
@@ -88,7 +88,7 @@ DATABASE_URL='postgres://postgres:postgres@localhost:5432/boilerplate'
 SENTRY_DSN='sentry_key'
 AWS_STORAGE_BUCKET_NAME='django-be'
 ```
-        '''
+        '''.format(readme_name)
     )
     readme_file.close()
 
