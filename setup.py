@@ -41,14 +41,14 @@ if __name__ == "__main__":
             if sum(check_substring) == 0:
                 for filename in files:
                     if 'setup.py' not in filename:
-                        file = open(root + '/' + filename, 'r')
+                        file = open(root + '/' + filename, 'r', encoding='utf-8')
                         text = str(file.read())
                         file.close()
                         text = text.replace('Django Boilerplate', name)
                         text = text.replace('boilerplate-django', name.lower() + '-django')
                         text = text.replace('boilerplate', name.lower())
                         text = text.replace('Boilerplate', name)
-                        file = open(root + '/' + filename, 'w')
+                        file = open(root + '/' + filename, 'w', encoding='utf-8')
                         file.write(text)
                         file.close()
 
