@@ -21,7 +21,7 @@ def signal_handler(signal, frame):
 # Constants
 ###
 CURR_DIR = os.getcwd()
-NON_BOILERPLATE_FOLDERS = ['/.git', '/.vscode', '/.idea' '/venv', '/settings/__pycache__']
+NON_BOILERPLATE_FOLDERS = ['/.git', '/.vscode', '/.idea', '/venv', '/settings/__pycache__']
 NON_BP_FLD_PATH = [CURR_DIR + fld for fld in NON_BOILERPLATE_FOLDERS]
 CELERY_EXCLUSIVE_FILES = ['settings/celery.py',]
 
