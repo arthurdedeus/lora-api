@@ -17,9 +17,3 @@ services:
     environment:
       - SERVICES=s3:4572
       - DEFAULT_REGION=us-west-1
-#<celery>
-  redis:
-    image: redis:5.0
-    ports:
-      - "6379:6379"
-#</celery>
