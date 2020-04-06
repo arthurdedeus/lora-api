@@ -5,7 +5,6 @@
 import os
 import sys
 import signal
-import re
 
 
 ###
@@ -21,9 +20,8 @@ def signal_handler(signal, frame):
 # Constants
 ###
 CURR_DIR = os.getcwd()
-NON_BOILERPLATE_FOLDERS = ['/.git', '/.vscode', '/.idea', '/venv', '/settings/__pycache__']
+NON_BOILERPLATE_FOLDERS = ['/.git', '/.vscode', '/.idea']
 NON_BP_FLD_PATH = [CURR_DIR + fld for fld in NON_BOILERPLATE_FOLDERS]
-CELERY_EXCLUSIVE_FILES = ['settings/celery.py',]
 
 ###
 # Setup boilerplate
@@ -32,11 +30,8 @@ if __name__ == "__main__":
     signal.signal(signal.SIGINT, signal_handler)
     if sys.version_info[0] < 3:
         name = raw_input('What is the project name (no spaces, display name)?\n')
-        use_celery = True if raw_input('Is this project using Celery? [y/N]\n') == 'y' else False
-
     else:
         name = input('What is the project name (no spaces, display name)?\n')
-        use_celery = True if input('Is this project using Celery? [y/N]\n') == 'y' else False
 
     if name:
         print('Customizing the boilerplate')
@@ -45,9 +40,6 @@ if __name__ == "__main__":
             check_substring = [1 for folder in NON_BP_FLD_PATH if folder in root]
             if sum(check_substring) == 0:
                 for filename in files:
-                    if filename in CELERY_EXCLUSIVE_FILES and not use_celery:
-                        os.remove(root + '/' + filename)
-                        continue
                     if 'setup.py' not in filename:
                         file = open(root + '/' + filename, 'r', encoding='utf-8')
                         text = str(file.read())
@@ -56,10 +48,6 @@ if __name__ == "__main__":
                         text = text.replace('boilerplate-django', name.lower() + '-django')
                         text = text.replace('boilerplate', name.lower())
                         text = text.replace('Boilerplate', name)
-                        if use_celery:
-                            text = re.sub(r'#<celery>([\s\S]*)#</celery>', r'\1', text)
-                        else:
-                            text = re.sub(r'#<celery>([\s\S]*)#</celery>', '', text)
                         file = open(root + '/' + filename, 'w', encoding='utf-8')
                         file.write(text)
                         file.close()
