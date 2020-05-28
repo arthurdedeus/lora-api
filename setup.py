@@ -24,6 +24,7 @@ CURR_DIR = os.getcwd()
 NON_BOILERPLATE_FOLDERS = ['/.git', '/.vscode', '/.idea', '/venv', '/settings/__pycache__']
 NON_BP_FLD_PATH = [CURR_DIR + fld for fld in NON_BOILERPLATE_FOLDERS]
 CELERY_EXCLUSIVE_FILES = ['settings/celery.py',]
+SOCIALS_EXCLUSIVE_FILES = ['accounts/custom_providers.py']
 
 ###
 # Setup boilerplate
@@ -33,10 +34,12 @@ if __name__ == "__main__":
     if sys.version_info[0] < 3:
         name = raw_input('What is the project name (no spaces, display name)?\n')
         use_celery = True if raw_input('Is this project using Celery? [y/N]\n') == 'y' else False
+        use_socials = True if raw_input('Is this project using Social Accounts (e.g. Google, Facebook)? [y/N]\n') == 'y' else False
 
     else:
         name = input('What is the project name (no spaces, display name)?\n')
         use_celery = True if input('Is this project using Celery? [y/N]\n') == 'y' else False
+        use_socials = True if input('Is this project using Social Accounts (e.g. Google, Facebook)? [y/N]\n') == 'y' else False
 
     if name:
         print('Customizing the boilerplate')
@@ -46,6 +49,9 @@ if __name__ == "__main__":
             if sum(check_substring) == 0:
                 for filename in files:
                     if filename in CELERY_EXCLUSIVE_FILES and not use_celery:
+                        os.remove(root + '/' + filename)
+                        continue
+                    if filename in SOCIALS_EXCLUSIVE_FILES and not use_socials:
                         os.remove(root + '/' + filename)
                         continue
                     if 'setup.py' not in filename:
@@ -60,6 +66,10 @@ if __name__ == "__main__":
                             text = re.sub(r'\n#<celery>([\s\S]*?)\n#</celery>', r'\1', text)
                         else:
                             text = re.sub(r'\n#<celery>([\s\S]*?)\n#</celery>', '', text)
+                        if use_socials:
+                            text = re.sub(r'\n#<socials>([\s\S]*?)\n#</socials>', r'\1', text)
+                        else:
+                            text = re.sub(r'\n#<socials>([\s\S]*?)\n#</socials>', '', text)
                         file = open(root + '/' + filename, 'w', encoding='utf-8')
                         file.write(text)
                         file.close()
@@ -94,7 +104,7 @@ You need a `.env`file with your environment variables, here's an example file:
 ```
 LOAD_ENVS_FROM_FILE='True'
 ENVIRONMENT='development'
-SECRET_KEY='#*=JungleDjangoBoilerplate=*#'
+SECRET_KEY='secret_key'
 DEFAULT_FROM_EMAIL='Boilerplate <boilerplate@jungledevs.com>'
 DATABASE_URL='postgres://postgres:postgres@localhost:5432/boilerplate'
 SENTRY_DSN='sentry_key'

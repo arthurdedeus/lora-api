@@ -79,11 +79,12 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
 
+#<socials>
     # Social Applications
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
-
+#</socials>
     # Cors
     'corsheaders',
 
@@ -201,6 +202,7 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_VERIFICATION = 'none'
+#<socials>
 ACCOUNT_ADAPTER = os.environ.get('ACCOUNT_ADAPTER', 'allauth.account.adapter.DefaultAccountAdapter')
 SOCIALACCOUNT_EMAIL_VERIFICATION = os.environ.get('SOCIALACCOUNT_EMAIL_VERIFICATION', 'none')
 
@@ -242,7 +244,7 @@ SOCIALACCOUNT_PROVIDERS = {
         },
     },
 }
-
+#</socials>
 ###
 # Change Password
 ###
