@@ -342,21 +342,3 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 if not DEBUG and ENVIRONMENT != 'test':
     EMAIL_BACKEND = 'django_amazon_ses.EmailBackend'
     AWS_DEFAULT_REGION = 'us-west-2'
-
-#<celery>
-###
-# Celery and Redis
-###
-
-REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
-REDIS_PORT = os.environ.get('REDIS_PORT', '6379')
-REDIS_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}/1'
-CELERY_DEFAULT_QUEUE = os.environ.get('CELERY_DEFAULT_QUEUE', 'scheduler')
-
-BROKER_URL = REDIS_URL
-VISIBILITY_TIMEOUT = os.environ.get('VISIBILITY_TIMEOUT', 86400)
-BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': VISIBILITY_TIMEOUT}
-ACCEPT_CONTENT = ['json']
-TASK_SERIALIZER = 'json'
-RESULT_SERIALIZER = 'json'
-#</celery>

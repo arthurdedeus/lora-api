@@ -5,7 +5,6 @@
 import os
 import sys
 import signal
-import re
 
 
 ###
@@ -21,7 +20,7 @@ def signal_handler(signal, frame):
 # Constants
 ###
 CURR_DIR = os.getcwd()
-NON_BOILERPLATE_FOLDERS = ['/.git', '/.vscode', '/.idea', '/venv', '/settings/__pycache__']
+NON_BOILERPLATE_FOLDERS = ['/.git', '/.vscode', '/.idea']
 NON_BP_FLD_PATH = [CURR_DIR + fld for fld in NON_BOILERPLATE_FOLDERS]
 CELERY_EXCLUSIVE_FILES = ['settings/celery.py',]
 SOCIALS_EXCLUSIVE_FILES = ['accounts/custom_providers.py']
@@ -54,6 +53,7 @@ if __name__ == "__main__":
             check_substring = [1 for folder in NON_BP_FLD_PATH if folder in root]
             if sum(check_substring) == 0:
                 for filename in files:
+
                     if '/'.join([root.replace(CURR_DIR + '/', ''), filename]) in FILES_TO_DELETE:
                         os.remove(root + '/' + filename)
                         continue
@@ -66,6 +66,7 @@ if __name__ == "__main__":
                         text = text.replace('boilerplate-django', name.lower() + '-django')
                         text = text.replace('boilerplate', name.lower())
                         text = text.replace('Boilerplate', name)
+
                         if use_celery:
                             text = re.sub(r'\n?#<celery>([\s\S]*?)\n#</celery>', r'\1', text)
                         else:
@@ -74,6 +75,7 @@ if __name__ == "__main__":
                             text = re.sub(r'\n?#<socials>([\s\S]*?)\n#</socials>', r'\1', text)
                         else:
                             text = re.sub(r'\n?#<socials>([\s\S]*?)\n#</socials>', '', text)
+
                         file = open(root + '/' + filename, 'w', encoding='utf-8')
                         file.write(text)
                         file.close()

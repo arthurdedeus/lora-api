@@ -69,9 +69,6 @@ jobs:
       - run: docker tag boilerplate-django:latest $ECR_REPO_STAGING:staging
       - run: docker push $ECR_REPO_STAGING:staging
       - run: ecs deploy $AWS_CLUSTER_STAGING $AWS_SERVICE_STAGING --timeout $AWS_TIMEOUT
-#<celery>
-      - run: ecs deploy -t $CIRCLE_TAG $AWS_CLUSTER_STAGING $AWS_SERVICE_CELERY_STAGING --timeout $AWS_TIMEOUT
-#</celery>
 
   deploy-production:
     <<: *defaults
@@ -88,9 +85,6 @@ jobs:
       - run: docker tag boilerplate-django:latest $ECR_REPO_PRODUCTION:$CIRCLE_TAG
       - run: docker push $ECR_REPO_PRODUCTION:$CIRCLE_TAG
       - run: ecs deploy -t $CIRCLE_TAG $AWS_CLUSTER_PRODUCTION $AWS_SERVICE_PRODUCTION --timeout $AWS_TIMEOUT
-#<celery>
-      - run: ecs deploy -t $CIRCLE_TAG $AWS_CLUSTER_PRODUCTION $AWS_SERVICE_CELERY_PRODUCTION --timeout $AWS_TIMEOUT
-#</celery>
 
 workflows:
   version: 2
