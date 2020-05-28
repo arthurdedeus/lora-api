@@ -42,9 +42,9 @@ if __name__ == "__main__":
         use_socials = True if input('Is this project using Social Accounts (e.g. Google, Facebook)? [y/N]\n') == 'y' else False
 
     FILES_TO_DELETE = list()
-    if use_celery:
+    if not use_celery:
         FILES_TO_DELETE += CELERY_EXCLUSIVE_FILES
-    if use_socials:
+    if not use_socials:
         FILES_TO_DELETE += SOCIALS_EXCLUSIVE_FILES
 
     if name:
