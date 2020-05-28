@@ -57,9 +57,9 @@ if __name__ == "__main__":
                         text = text.replace('boilerplate', name.lower())
                         text = text.replace('Boilerplate', name)
                         if use_celery:
-                            text = re.sub(r'#<celery>([\s\S]*)#</celery>', r'\1', text)
+                            text = re.sub(r'\n#<celery>([\s\S]*?)\n#</celery>', r'\1', text)
                         else:
-                            text = re.sub(r'#<celery>([\s\S]*)#</celery>', '', text)
+                            text = re.sub(r'\n#<celery>([\s\S]*?)\n#</celery>', '', text)
                         file = open(root + '/' + filename, 'w', encoding='utf-8')
                         file.write(text)
                         file.close()
