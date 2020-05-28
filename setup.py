@@ -54,7 +54,7 @@ if __name__ == "__main__":
             check_substring = [1 for folder in NON_BP_FLD_PATH if folder in root]
             if sum(check_substring) == 0:
                 for filename in files:
-                    if '/'.join(root.replace(CURR_DIR + '/', ''), filename) in FILES_TO_DELETE:
+                    if '/'.join([root.replace(CURR_DIR + '/', ''), filename]) in FILES_TO_DELETE:
                         os.remove(root + '/' + filename)
                         continue
 
