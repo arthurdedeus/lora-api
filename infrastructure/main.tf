@@ -26,6 +26,10 @@ locals {
     storage_cdn_domain = [
       "images-staging.boilerplate.com",
     ]
+    redis_node_type            = "cache.t2.micro"
+    redis_num_cache_nodes      = 0
+    redis_engine_version       = "5.0.5"
+    redis_parameter_group_name = "default.redis5.0"
   }
 
   prod_config = {
@@ -36,6 +40,10 @@ locals {
     storage_cdn_domain = [
       "images.boilerplate.com",
     ]
+    redis_node_type            = "cache.t2.micro"
+    redis_num_cache_nodes      = 0
+    redis_engine_version       = "5.0.5"
+    redis_parameter_group_name = "default.redis5.0"
   }
 
   configs = {
@@ -94,4 +102,15 @@ module "storage" {
   project         = local.project
   cdn_domain      = local.config.storage_cdn_domain
   certificate_arn = local.certificate_arn
+}
+
+module "redis" {
+  source               = "./Redis"
+  project              = local.project
+  node_type            = local.config.redis_node_type
+  num_cache_nodes      = local.config.redis_num_cache_nodes
+  engine_version       = local.config.redis_engine_version
+  parameter_group_name = local.config.redis_parameter_group_name
+  subnet_ids           = module.vpc.this_subnet_ids
+  security_group_ids   = [module.vpc.redis_security_group_id]
 }

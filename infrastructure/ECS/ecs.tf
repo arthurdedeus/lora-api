@@ -1,5 +1,7 @@
 locals {
   default_name = "${var.project}-backend-${terraform.workspace}"
+  default_celery_name = "${var.project}-celery-${terraform.workspace}"
+  default_celerybeat_name = "${var.project}-celerybeat-${terraform.workspace}"
 }
 
 # Docker image repository
@@ -24,6 +26,28 @@ resource "aws_cloudwatch_log_group" "this_log" {
   }
 }
 
+resource "aws_cloudwatch_log_group" "celery_log" {
+  name              = local.default_celery_name
+  retention_in_days = var.log_retention
+
+  tags = {
+    Project     = var.project
+    Name        = "Cloudwatch"
+    Environment = terraform.workspace
+  }
+}
+
+resource "aws_cloudwatch_log_group" "celerybeat_log" {
+  name              = local.default_celery_name
+  retention_in_days = var.log_retention
+
+  tags = {
+    Project     = var.project
+    Name        = "Cloudwatch"
+    Environment = terraform.workspace
+  }
+}
+
 resource "aws_ecs_task_definition" "this" {
   family = local.default_name
   container_definitions = templatefile("${path.module}/task_definition_template.json",
@@ -32,6 +56,8 @@ resource "aws_ecs_task_definition" "this" {
       env       = terraform.workspace
       log_group = aws_cloudwatch_log_group.this_log.name
       region    = var.region
+      command   = null
+      memory    = 128
     }
   )
 
@@ -41,6 +67,49 @@ resource "aws_ecs_task_definition" "this" {
     Environment = terraform.workspace
   }
 }
+
+resource "aws_ecs_task_definition" "celery" {
+  family = local.default_name
+  container_definitions = templatefile("${path.module}/task_definition_template.json",
+    { name      = "celery"
+      image     = "${aws_ecr_repository.ecr.repository_url}:${terraform.workspace}"
+      env       = terraform.workspace
+      log_group = aws_cloudwatch_log_group.celery_log.name
+      region    = var.region
+      command   =  ["celery","${terraform.workspace}"]
+      memory    = 128
+    }
+  )
+
+  tags = {
+    Project     = var.project
+    Name        = "ECS Task Definition"
+    Environment = terraform.workspace
+  }
+}
+
+
+resource "aws_ecs_task_definition" "celerybeat" {
+  family = local.default_name
+  container_definitions = templatefile("${path.module}/task_definition_template.json",
+    { name      = "celerybeat"
+      image     = "${aws_ecr_repository.ecr.repository_url}:${terraform.workspace}"
+      env       = terraform.workspace
+      log_group = aws_cloudwatch_log_group.celerybeat_log.name
+      region    = var.region
+      command   = ["celerybeat"]
+      memory    = 200
+    }
+  )
+
+  tags = {
+    Project     = var.project
+    Name        = "ECS Task Definition"
+    Environment = terraform.workspace
+  }
+}
+
+
 
 data "aws_ami" "amazon_linux_ecs" {
   most_recent = true
@@ -161,6 +230,38 @@ resource "aws_ecs_service" "this" {
   load_balancer {
     target_group_arn = var.lb_target_group_arn
     container_name   = "backend"
+    container_port   = 8000
+  }
+}
+
+
+resource "aws_ecs_service" "celery" {
+  name                               = local.default_celery_name
+  cluster                            = aws_ecs_cluster.this.id
+  task_definition                    = aws_ecs_task_definition.celery.arn
+  desired_count                      = var.desired_celery_service_tasks
+  deployment_maximum_percent         = var.deployment_maximum_percent
+  deployment_minimum_healthy_percent = var.deployment_minimum_healthy_percent
+
+  load_balancer {
+    target_group_arn = var.lb_target_group_arn
+    container_name   = "celery"
+    container_port   = 8000
+  }
+}
+
+
+resource "aws_ecs_service" "celerybeat" {
+  name                               = local.default_celerybeat_name
+  cluster                            = aws_ecs_cluster.this.id
+  task_definition                    = aws_ecs_task_definition.celerybeat.arn
+  desired_count                      = var.desired_celerybeat_service_tasks
+  deployment_maximum_percent         = var.deployment_maximum_percent
+  deployment_minimum_healthy_percent = var.deployment_minimum_healthy_percent
+
+  load_balancer {
+    target_group_arn = var.lb_target_group_arn
+    container_name   = "celerybeat"
     container_port   = 8000
   }
 }
