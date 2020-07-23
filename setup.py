@@ -22,7 +22,7 @@ def signal_handler(signal, frame):
 CURR_DIR = os.getcwd()
 NON_BOILERPLATE_FOLDERS = ['/.git', '/.vscode', '/.idea']
 NON_BP_FLD_PATH = [CURR_DIR + fld for fld in NON_BOILERPLATE_FOLDERS]
-CELERY_EXCLUSIVE_FILES = ['settings/celery.py',]
+CELERY_EXCLUSIVE_FILES = ['settings/celery.py', 'Redis/redis.tf', 'Redis/variables.tf', ]
 SOCIALS_EXCLUSIVE_FILES = ['accounts/custom_providers.py']
 
 ###

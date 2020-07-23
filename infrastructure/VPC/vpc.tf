@@ -101,6 +101,7 @@ resource "aws_security_group" "rds_security_group" {
   }
 }
 
+#<celery>
 resource "aws_security_group" "redis_security_group" {
   vpc_id      = data.aws_vpc.default.id
   name        = "${var.project}-backend-${terraform.workspace}-redis"
@@ -125,3 +126,4 @@ resource "aws_security_group" "redis_security_group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+#</celery>

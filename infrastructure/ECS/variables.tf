@@ -65,6 +65,7 @@ variable "desired_service_tasks" {
   default     = 1
 }
 
+#<celery>
 variable "desired_celery_service_tasks" {
   description = "Desired number of tasks running on service"
   type        = number
@@ -76,6 +77,7 @@ variable "desired_celerybeat_service_tasks" {
   type        = number
   default     = 1
 }
+#</celery>
 
 variable "deployment_maximum_percent" {
   description = "Maximum health percentage on deployment"

@@ -1,7 +1,9 @@
 locals {
   default_name = "${var.project}-backend-${terraform.workspace}"
+#<celery>
   default_celery_name = "${var.project}-celery-${terraform.workspace}"
   default_celerybeat_name = "${var.project}-celerybeat-${terraform.workspace}"
+#</celery>
 }
 
 # Docker image repository
@@ -26,6 +28,7 @@ resource "aws_cloudwatch_log_group" "this_log" {
   }
 }
 
+#<celery>
 resource "aws_cloudwatch_log_group" "celery_log" {
   name              = local.default_celery_name
   retention_in_days = var.log_retention
@@ -47,6 +50,7 @@ resource "aws_cloudwatch_log_group" "celerybeat_log" {
     Environment = terraform.workspace
   }
 }
+#</celery>
 
 resource "aws_ecs_task_definition" "this" {
   family = local.default_name
@@ -68,6 +72,7 @@ resource "aws_ecs_task_definition" "this" {
   }
 }
 
+#<celery>
 resource "aws_ecs_task_definition" "celery" {
   family = local.default_name
   container_definitions = templatefile("${path.module}/task_definition_template.json",
@@ -88,7 +93,6 @@ resource "aws_ecs_task_definition" "celery" {
   }
 }
 
-
 resource "aws_ecs_task_definition" "celerybeat" {
   family = local.default_name
   container_definitions = templatefile("${path.module}/task_definition_template.json",
@@ -108,8 +112,7 @@ resource "aws_ecs_task_definition" "celerybeat" {
     Environment = terraform.workspace
   }
 }
-
-
+#</celery>
 
 data "aws_ami" "amazon_linux_ecs" {
   most_recent = true
@@ -234,7 +237,7 @@ resource "aws_ecs_service" "this" {
   }
 }
 
-
+#<celery>
 resource "aws_ecs_service" "celery" {
   name                               = local.default_celery_name
   cluster                            = aws_ecs_cluster.this.id
@@ -250,7 +253,6 @@ resource "aws_ecs_service" "celery" {
   }
 }
 
-
 resource "aws_ecs_service" "celerybeat" {
   name                               = local.default_celerybeat_name
   cluster                            = aws_ecs_cluster.this.id
@@ -265,3 +267,4 @@ resource "aws_ecs_service" "celerybeat" {
     container_port   = 8000
   }
 }
+#</celery>

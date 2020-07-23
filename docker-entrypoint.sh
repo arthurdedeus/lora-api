@@ -5,6 +5,7 @@ if [ "$1" = "manage" ]; then
     shift 1
     exec python manage.py "$@"
 
+#<celery>
 elif [ "$1" = "celery" ]; then
     # Start celery workers
     shift 1
@@ -15,6 +16,7 @@ elif [ "$1" = "celerybeat" ]; then
     # Start celery beat
     echo Starting celery beat
     exec celery -A settings beat -l INFO
+#</celery>
 
 else
     python manage.py migrate                  # Apply database migrations
