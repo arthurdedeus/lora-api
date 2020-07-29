@@ -265,6 +265,7 @@ if not DEBUG and ENVIRONMENT != 'test':
 
     sentry_sdk.init(
         dsn=os.environ.get('SENTRY_DSN'),
+        environment=ENVIRONMENT,
         integrations=[DjangoIntegration()],
         before_send=before_send,
     )
