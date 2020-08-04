@@ -16,7 +16,7 @@
             "value": "${env}"
         }
       ],
-      "command": ${command},
+      "command": ${jsonencode(command)},
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {

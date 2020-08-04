@@ -81,7 +81,7 @@ resource "aws_ecs_task_definition" "celery" {
       env       = terraform.workspace
       log_group = aws_cloudwatch_log_group.celery_log.name
       region    = var.region
-      command   =  ["celery","${terraform.workspace}"]
+      command   =  ["celery", terraform.workspace]
       memory    = 128
     }
   )
