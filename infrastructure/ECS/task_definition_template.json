@@ -2,7 +2,7 @@
     {
       "name": "${name}",
       "image": "${image}",
-      "memoryReservation": 128,
+      "memoryReservation": ${memory},
       "essential": true,
       "portMappings": [
         {
@@ -16,12 +16,13 @@
             "value": "${env}"
         }
       ],
+      "command": ${jsonencode(command)},
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
             "awslogs-group": "${log_group}",
             "awslogs-region": "${region}"
-        }
+        },
       }
     }
   ]

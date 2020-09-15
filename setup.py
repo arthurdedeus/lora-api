@@ -5,7 +5,7 @@
 import os
 import sys
 import signal
-
+import re
 
 ###
 # SIGTERM
@@ -22,6 +22,8 @@ def signal_handler(signal, frame):
 CURR_DIR = os.getcwd()
 NON_BOILERPLATE_FOLDERS = ['/.git', '/.vscode', '/.idea']
 NON_BP_FLD_PATH = [CURR_DIR + fld for fld in NON_BOILERPLATE_FOLDERS]
+CELERY_EXCLUSIVE_FILES = ['settings/celery.py', 'Redis/redis.tf', 'Redis/variables.tf', ]
+SOCIALS_EXCLUSIVE_FILES = ['accounts/custom_providers.py']
 
 ###
 # Setup boilerplate
@@ -30,8 +32,19 @@ if __name__ == "__main__":
     signal.signal(signal.SIGINT, signal_handler)
     if sys.version_info[0] < 3:
         name = raw_input('What is the project name (no spaces, display name)?\n')
+        use_celery = True if raw_input('Is this project using Celery? [y/N]\n') == 'y' else False
+        use_socials = True if raw_input('Is this project using Social Accounts (e.g. Google, Facebook)? [y/N]\n') == 'y' else False
+
     else:
         name = input('What is the project name (no spaces, display name)?\n')
+        use_celery = True if input('Is this project using Celery? [y/N]\n') == 'y' else False
+        use_socials = True if input('Is this project using Social Accounts (e.g. Google, Facebook)? [y/N]\n') == 'y' else False
+
+    FILES_TO_DELETE = list()
+    if not use_celery:
+        FILES_TO_DELETE += CELERY_EXCLUSIVE_FILES
+    if not use_socials:
+        FILES_TO_DELETE += SOCIALS_EXCLUSIVE_FILES
 
     if name:
         print('Customizing the boilerplate')
@@ -40,6 +53,11 @@ if __name__ == "__main__":
             check_substring = [1 for folder in NON_BP_FLD_PATH if folder in root]
             if sum(check_substring) == 0:
                 for filename in files:
+
+                    if '/'.join([root.replace(CURR_DIR + '/', ''), filename]) in FILES_TO_DELETE:
+                        os.remove(root + '/' + filename)
+                        continue
+
                     if 'setup.py' not in filename:
                         file = open(root + '/' + filename, 'r', encoding='utf-8')
                         text = str(file.read())
@@ -48,6 +66,16 @@ if __name__ == "__main__":
                         text = text.replace('boilerplate-django', name.lower() + '-django')
                         text = text.replace('boilerplate', name.lower())
                         text = text.replace('Boilerplate', name)
+
+                        if use_celery:
+                            text = re.sub(r'\n?#<celery>([\s\S]*?)\n#</celery>', r'\1', text)
+                        else:
+                            text = re.sub(r'\n?#<celery>([\s\S]*?)\n#</celery>', '', text)
+                        if use_socials:
+                            text = re.sub(r'\n?#<socials>([\s\S]*?)\n#</socials>', r'\1', text)
+                        else:
+                            text = re.sub(r'\n?#<socials>([\s\S]*?)\n#</socials>', '', text)
+
                         file = open(root + '/' + filename, 'w', encoding='utf-8')
                         file.write(text)
                         file.close()
@@ -82,7 +110,7 @@ You need a `.env`file with your environment variables, here's an example file:
 ```
 LOAD_ENVS_FROM_FILE='True'
 ENVIRONMENT='development'
-SECRET_KEY='#*=JungleDjangoBoilerplate=*#'
+SECRET_KEY='secret_key'
 DEFAULT_FROM_EMAIL='Boilerplate <boilerplate@jungledevs.com>'
 DATABASE_URL='postgres://postgres:postgres@localhost:5432/boilerplate'
 SENTRY_DSN='sentry_key'
