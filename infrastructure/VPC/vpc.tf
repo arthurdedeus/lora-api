@@ -100,3 +100,30 @@ resource "aws_security_group" "rds_security_group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+#<celery>
+resource "aws_security_group" "redis_security_group" {
+  vpc_id      = data.aws_vpc.default.id
+  name        = "${var.project}-backend-${terraform.workspace}-redis"
+  description = "Security Group for Redis on ${var.project} Backend ${terraform.workspace}"
+  tags = {
+    Project     = var.project
+    Name        = "Security Group"
+    Environment = terraform.workspace
+  }
+
+  ingress {
+    from_port       = 6379
+    to_port         = 6379
+    protocol        = "tcp"
+    security_groups = [aws_security_group.instances_security_group.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+#</celery>

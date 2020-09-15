@@ -21,8 +21,10 @@ from rest_framework_nested import routers
 from .views import (
     ChangeEmailViewSet,
     ChangeEmailConfirmationViewSet,
+#<socials>
     FacebookLogin,
     GoogleLogin,
+#</socials>
 )
 
 ###
@@ -80,6 +82,7 @@ urlpatterns = [
         RegisterView.as_view(),
         name='rest_register',
     ),
+#<socials>
     url(
         r'^facebook/$',
         FacebookLogin.as_view(),
@@ -90,5 +93,6 @@ urlpatterns = [
         GoogleLogin.as_view(),
         name='google_login',
     ),
+#</socials>
     url(r'^', include(router.urls)),
 ]
