@@ -59,7 +59,10 @@ if __name__ == "__main__":
                         continue
 
                     if 'setup.py' not in filename:
-                        file = open(root + '/' + filename, 'r', encoding='utf-8')
+                        if sys.version_info[0] < 3:
+                            file = open(root + '/' + filename, 'r')
+                        else:
+                            file = open(root + '/' + filename, 'r', encoding='utf-8')
                         text = str(file.read())
                         file.close()
                         text = text.replace('Django Boilerplate', name)
