@@ -72,7 +72,7 @@ jobs:
         name: build
         command: |
           docker build \
-          --build-arg SENTRY_RELEASE=${SENTRY_RELEASE}
+          --build-arg SENTRY_RELEASE=${SENTRY_RELEASE} \
           -t boilerplate-django .
       - run: docker tag boilerplate-django:latest $ECR_REPO_STAGING:staging
       - run: docker push $ECR_REPO_STAGING:staging
@@ -104,7 +104,7 @@ jobs:
         name: build
         command: |
           docker build \
-          --build-arg SENTRY_RELEASE=${SENTRY_RELEASE}
+          --build-arg SENTRY_RELEASE=${SENTRY_RELEASE} \
           -t boilerplate-django .
       - run: docker tag boilerplate-django:latest $ECR_REPO_PRODUCTION:$CIRCLE_TAG
       - run: docker push $ECR_REPO_PRODUCTION:$CIRCLE_TAG
