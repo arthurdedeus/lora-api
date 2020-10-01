@@ -81,10 +81,10 @@ jobs:
       - run: sentry-cli releases set-commits --auto ${VERSION}
       - run: sentry-cli releases finalize ${VERSION}
       - run: sentry-cli releases deploys ${VERSION} new -e staging
-      #<celery>
+#<celery>
       - run: ecs deploy -t $CIRCLE_TAG $AWS_CLUSTER_STAGING $AWS_SERVICE_CELERY_STAGING --timeout $AWS_TIMEOUT
       - run: ecs deploy -t $CIRCLE_TAG $AWS_CLUSTER_STAGING $AWS_SERVICE_CELERYBEAT_STAGING --timeout $AWS_TIMEOUT
-  #</celery>
+#</celery>
 
   deploy-production:
     <<: *defaults
@@ -113,7 +113,7 @@ jobs:
       - run: sentry-cli releases set-commits --auto ${VERSION}
       - run: sentry-cli releases finalize ${VERSION}
       - run: sentry-cli releases deploys ${VERSION} new -e production
-      #<celery>
+#<celery>
       - run: ecs deploy -t $CIRCLE_TAG $AWS_CLUSTER_PRODUCTION $AWS_SERVICE_CELERY_PRODUCTION --timeout $AWS_TIMEOUT
       - run: ecs deploy -t $CIRCLE_TAG $AWS_CLUSTER_PRODUCTION $AWS_SERVICE_CELERYBEAT_PRODUCTION --timeout $AWS_TIMEOUT
 #</celery>
