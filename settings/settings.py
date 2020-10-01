@@ -166,7 +166,7 @@ AWS_AUTO_CREATE_BUCKET = True
 AWS_IS_GZIPPED = True
 AWS_QUERYSTRING_AUTH = False
 if DEBUG or ENVIRONMENT == 'test':
-    AWS_S3_ENDPOINT_URL = 'http://localhost:4572/'
+    AWS_S3_ENDPOINT_URL = 'http://localhost:4566/'
     AWS_SECRET_ACCESS_KEY = 'foo'
     AWS_ACCESS_KEY_ID = 'foo'
 

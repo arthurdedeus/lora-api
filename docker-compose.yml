@@ -1,4 +1,4 @@
-version: '3.0'
+version: "3.0"
 services:
   db:
     image: postgres:10
@@ -11,11 +11,11 @@ services:
       POSTGRES_DB: "boilerplate"
 
   localstack-s3:
-    image: localstack/localstack:latest
+    image: localstack/localstack:0.11.4
     ports:
-      - "4572:4572"
+      - "4566:4566"
     environment:
-      - SERVICES=s3:4572
+      - SERVICES=s3
       - DEFAULT_REGION=us-west-1
 #<celery>
   redis:
