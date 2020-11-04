@@ -79,6 +79,10 @@ if __name__ == "__main__":
                         else:
                             text = re.sub(r'\n?#<socials>([\s\S]*?)\n#</socials>', '', text)
 
+                        if sys.version_info[0] < 3:
+                            file = open(root + '/' + filename, 'r')
+                        else:
+                            file = open(root + '/' + filename, 'r', encoding='utf-8')
                         file = open(root + '/' + filename, 'w', encoding='utf-8')
                         file.write(text)
                         file.close()
