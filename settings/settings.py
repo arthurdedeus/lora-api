@@ -90,6 +90,9 @@ INSTALLED_APPS = [
 
     # Applications
     'accounts',
+
+    # Third party django mods
+    'drf_yasg',
 ]
 
 SITE_ID = 1
