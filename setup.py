@@ -85,7 +85,7 @@ if __name__ == "__main__":
                             file = open(root + '/' + filename, 'r', encoding='utf-8')
                         if sys.version_info[0] < 3:
                             file = open(root + '/' + filename, 'w')
-                         else:
+                        else:
                             file = open(root + '/' + filename, 'w', encoding='utf-8')
                         file.write(text)
                         file.close()
