@@ -21,3 +21,8 @@ class TimestampModel(models.Model):
 
     created_at = models.DateTimeField(null=False, blank=True, auto_now_add=True)
     updated_at = models.DateTimeField(null=False, blank=True, auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if kwargs.get('update_fields'):
+            kwargs['update_fields'] = list(set(list(kwargs['update_fields']) + ['updated_at']))
+        return super().save(*args, **kwargs)
