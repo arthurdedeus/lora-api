@@ -4,7 +4,7 @@ API V1: Accounts Urls
 ###
 # Libraries
 ###
-from django.conf.urls import url, include
+from django.urls import re_path, include
 from rest_auth.views import (
     LoginView,
     LogoutView,
@@ -37,62 +37,62 @@ router = routers.SimpleRouter()
 # URLs
 ###
 urlpatterns = [
-    url(
+    re_path(
         r'^login/$',
         LoginView.as_view(),
         name='rest_login',
     ),
-    url(
+    re_path(
         r'^logout/$',
         LogoutView.as_view(),
         name='rest_logout',
     ),
-    url(
+    re_path(
         r'^user/$',
         UserDetailsView.as_view(),
         name='rest_user_details',
     ),
-    url(
+    re_path(
         r'^change-password/$',
         PasswordChangeView.as_view(),
         name='rest_password_change',
     ),
-    url(
+    re_path(
         r'^change-email/(?P<uuid>[^/]+)/$',
         ChangeEmailConfirmationViewSet.as_view(),
         name='change-email-confirmation',
     ),
-    url(
+    re_path(
         r'^change-email/$',
         ChangeEmailViewSet.as_view(),
         name='change-email',
     ),
-    url(
+    re_path(
         r'^password/reset/$',
         PasswordResetView.as_view(),
         name='rest_password_reset',
     ),
-    url(
+    re_path(
         r'^password/reset/confirm/$',
         PasswordResetConfirmView.as_view(),
         name='rest_password_reset_confirm',
     ),
-    url(
+    re_path(
         r'^register/$',
         RegisterView.as_view(),
         name='rest_register',
     ),
 #<socials>
-    url(
+    re_path(
         r'^facebook/$',
         FacebookLogin.as_view(),
         name='fb_login',
     ),
-    url(
+    re_path(
         r'^google/$',
         GoogleLogin.as_view(),
         name='google_login',
     ),
 #</socials>
-    url(r'^', include(router.urls)),
+    re_path(r'^', include(router.urls)),
 ]

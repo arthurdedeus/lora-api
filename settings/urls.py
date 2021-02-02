@@ -4,7 +4,7 @@ Django Boilerplate URL Configuration
 ###
 # Libraries
 ###
-from django.conf.urls import url, include
+from django.urls import re_path, include
 from django.contrib import admin
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -34,20 +34,19 @@ schema_v1_view = get_schema_view(
 ###
 urlpatterns = [
     # Admin
-    url(r'^admin/', admin.site.urls),
+    re_path(r'^admin/', admin.site.urls),
 
     # Health Check
-    url(r'health-check/$', health_check, name='health_check'),
+    re_path(r'health-check/$', health_check, name='health_check'),
 
     # Applications
-    url(r'^', include('accounts.urls')),
+    re_path(r'^', include('accounts.urls')),
 ]
 
 if settings.ENVIRONMENT != 'production':
     urlpatterns += [
         # Swagger URLs
-        url(r'^swagger(?P<format>\.json|\.yaml)$', schema_v1_view.without_ui(cache_timeout=0), name='schema-json'),
-        url(r'^swagger/$', schema_v1_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-        url(r'^redoc/$', schema_v1_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+        re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_v1_view.without_ui(cache_timeout=0), name='schema-json'),
+        re_path(r'^swagger/$', schema_v1_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+        re_path(r'^redoc/$', schema_v1_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     ]
-

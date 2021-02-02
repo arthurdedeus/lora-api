@@ -4,12 +4,12 @@ Accounts URL Configuration
 ###
 # Libraries
 ###
-from django.conf.urls import url, include
+from django.urls import re_path, include
 
 
 ###
 # URL Patterns
 ###
 urlpatterns = [
-    url(r'^api/v1/', include('accounts.api.v1.urls'))
+    re_path(r'^api/v1/', include('accounts.api.v1.urls'))
 ]
