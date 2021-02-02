@@ -6,9 +6,9 @@ Boilerplate Celery Configuration
 ###
 import os
 
-from django.conf import settings
-from celery.utils.log import get_task_logger
 from celery import Celery
+from celery.utils.log import get_task_logger
+from django.conf import settings
 
 logger = get_task_logger(__name__)
 
@@ -18,5 +18,5 @@ logger = get_task_logger(__name__)
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings.settings')
 
 app = Celery('settings')
-app.config_from_object('django.conf:settings')
+app.config_from_object('settings.celeryconfig')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)

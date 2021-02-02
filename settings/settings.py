@@ -12,6 +12,7 @@ import dotenv
 import sentry_sdk
 
 from s3_environ import S3Environ
+from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.django import DjangoIntegration
 
 ###
@@ -268,6 +269,10 @@ if not DEBUG and ENVIRONMENT != 'test':
             return None
         return event
 
+    integrations = [DjangoIntegration()]
+#<celery>
+    integrations = [DjangoIntegration(), CeleryIntegration()]
+#</celery>
     sentry_sdk.init(
         dsn=os.environ.get('SENTRY_DSN'),
         integrations=[DjangoIntegration()],
@@ -353,13 +358,8 @@ if not DEBUG and ENVIRONMENT != 'test':
 
 REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
 REDIS_PORT = os.environ.get('REDIS_PORT', '6379')
-REDIS_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}/1'
-CELERY_DEFAULT_QUEUE = os.environ.get('CELERY_DEFAULT_QUEUE', 'scheduler')
+REDIS_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}'
 
-BROKER_URL = REDIS_URL
-VISIBILITY_TIMEOUT = os.environ.get('VISIBILITY_TIMEOUT', 86400)
-BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': VISIBILITY_TIMEOUT}
-ACCEPT_CONTENT = ['json']
-TASK_SERIALIZER = 'json'
-RESULT_SERIALIZER = 'json'
+CELERY_URL = f'{REDIS_URL}/2'
+CELERY_DEFAULT_QUEUE = os.environ.get('CELERY_DEFAULT_QUEUE', ENVIRONMENT)
 #</celery>
