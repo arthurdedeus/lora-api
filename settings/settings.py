@@ -89,6 +89,11 @@ INSTALLED_APPS = [
     # Cors
     'corsheaders',
 
+#<websockets>
+    # Channels
+    'channels',
+#</websockets>
+
     # Applications
     'accounts',
 
@@ -334,6 +339,14 @@ LOGGING = {
             'level': 'INFO',
             'handlers': ['console'],
         },
+
+#<websockets>
+        'websockets': {
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'handlers': ['console', ],
+        },
+#</websockets>
+
     },
 }
 
@@ -363,3 +376,34 @@ REDIS_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}'
 CELERY_URL = f'{REDIS_URL}/2'
 CELERY_DEFAULT_QUEUE = os.environ.get('CELERY_DEFAULT_QUEUE', ENVIRONMENT)
 #</celery>
+
+#<websockets>
+###
+# Channels
+###
+REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
+REDIS_PORT = os.environ.get('REDIS_PORT', '6379')
+REDIS_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}'
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": f'{REDIS_URL}/1',
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+ASGI_APPLICATION = 'settings.routing.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [f'{REDIS_URL}/1'],
+            "capacity": 1500,
+            "expiry": 10,
+        },
+    },
+}
+#</websockets>

@@ -18,6 +18,13 @@ elif [ "$1" = "celerybeat" ]; then
     exec celery -A settings beat -l INFO
 #</celery>
 
+#<websockets>
+elif [ "$1" = "daphne"]; then
+    # Start daphne
+    echo Starting daphne
+    exec daphne -b 0.0.0.0 -p 8001 settings.asgi:application
+#</websockets>
+
 else
     python manage.py migrate                  # Apply database migrations
     python manage.py collectstatic --noinput  # Collect static files

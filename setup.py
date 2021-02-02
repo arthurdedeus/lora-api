@@ -7,7 +7,7 @@ import sys
 import signal
 import re
 
-###
+
 # SIGTERM
 ###
 def signal_handler(signal, frame):
@@ -16,13 +16,16 @@ def signal_handler(signal, frame):
     os.system(delete_dev_branch)
     sys.exit(0)
 
+
 ###
 # Constants
 ###
 CURR_DIR = os.getcwd()
 NON_BOILERPLATE_FOLDERS = ['/.git', '/.vscode', '/.idea']
 NON_BP_FLD_PATH = [CURR_DIR + fld for fld in NON_BOILERPLATE_FOLDERS]
-CELERY_EXCLUSIVE_FILES = ['settings/celery.py', 'Redis/redis.tf', 'Redis/variables.tf', ]
+CELERY_EXCLUSIVE_FILES = ['settings/celery.py', 'settings/celeryconfig.py']
+WEBSOCKETS_EXCLUSIVE_FILES = ['settings/asgi.py', 'settings/consumer.py', 'settings/routing.py',
+                              'helpers/custom_auth_middleware.py']
 SOCIALS_EXCLUSIVE_FILES = ['accounts/custom_providers.py']
 
 ###
@@ -33,16 +36,22 @@ if __name__ == "__main__":
     if sys.version_info[0] < 3:
         name = raw_input('What is the project name (no spaces, display name)?\n')
         use_celery = True if raw_input('Is this project using Celery? [y/N]\n') == 'y' else False
-        use_socials = True if raw_input('Is this project using Social Accounts (e.g. Google, Facebook)? [y/N]\n') == 'y' else False
+        use_websockets = True if raw_input('Is this project using WebSockets [y/N]\n') == 'y' else False
+        use_socials = True if raw_input(
+            'Is this project using Social Accounts (e.g. Google, Facebook)? [y/N]\n') == 'y' else False
 
     else:
         name = input('What is the project name (no spaces, display name)?\n')
         use_celery = True if input('Is this project using Celery? [y/N]\n') == 'y' else False
-        use_socials = True if input('Is this project using Social Accounts (e.g. Google, Facebook)? [y/N]\n') == 'y' else False
+        use_websockets = True if input('Is this project using WebSockets [y/N]\n') == 'y' else False
+        use_socials = True if input(
+            'Is this project using Social Accounts (e.g. Google, Facebook)? [y/N]\n') == 'y' else False
 
     FILES_TO_DELETE = list()
     if not use_celery:
         FILES_TO_DELETE += CELERY_EXCLUSIVE_FILES
+    if not use_websockets:
+        FILES_TO_DELETE += WEBSOCKETS_EXCLUSIVE_FILES
     if not use_socials:
         FILES_TO_DELETE += SOCIALS_EXCLUSIVE_FILES
 
@@ -74,6 +83,10 @@ if __name__ == "__main__":
                             text = re.sub(r'\n?#<celery>([\s\S]*?)\n#</celery>', r'\1', text)
                         else:
                             text = re.sub(r'\n?#<celery>([\s\S]*?)\n#</celery>', '', text)
+                        if use_websockets:
+                            text = re.sub(r'\n?#<websockets>([\s\S]*?)\n#</websockets>', r'\1', text)
+                        else:
+                            text = re.sub(r'\n?#<websockets>([\s\S]*?)\n#</websockets>', '', text)
                         if use_socials:
                             text = re.sub(r'\n?#<socials>([\s\S]*?)\n#</socials>', r'\1', text)
                         else:
@@ -100,7 +113,7 @@ if __name__ == "__main__":
 
 ## Requirements
 
-- [Python 3.7](https://www.python.org)
+- [Python 3.9](https://www.python.org)
 - [Docker](https://www.docker.com)
 - [Docker Compose](https://docs.docker.com/compose/)
 - [Virtualenv](https://github.com/pypa/virtualenv/)
@@ -124,6 +137,8 @@ SECRET_KEY='secret_key'
 DEFAULT_FROM_EMAIL='Boilerplate <boilerplate@jungledevs.com>'
 DATABASE_URL='postgres://postgres:postgres@localhost:5432/boilerplate'
 SENTRY_DSN='sentry_key'
+REDIS_HOST=localhost
+REDIS_PORT=6379
 AWS_STORAGE_BUCKET_NAME='django-be'
 ```
         '''.format(readme_name)
