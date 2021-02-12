@@ -273,14 +273,16 @@ if not DEBUG and ENVIRONMENT != 'test':
         if event.get('logger') == 'django.security.DisallowedHost':
             return None
         return event
-
+#<not_celery>
     integrations = [DjangoIntegration()]
+#</not_celery>
 #<celery>
     integrations = [DjangoIntegration(), CeleryIntegration()]
 #</celery>
     sentry_sdk.init(
         dsn=os.environ.get('SENTRY_DSN'),
-        integrations=[DjangoIntegration()],
+        environment=ENVIRONMENT,
+        integrations=integrations,
         before_send=before_send,
     )
 
