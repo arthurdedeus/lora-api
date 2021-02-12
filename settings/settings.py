@@ -12,7 +12,9 @@ import dotenv
 import sentry_sdk
 
 from s3_environ import S3Environ
+#<celery>
 from sentry_sdk.integrations.celery import CeleryIntegration
+#</celery>
 from sentry_sdk.integrations.django import DjangoIntegration
 
 ###
