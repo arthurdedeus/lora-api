@@ -88,6 +88,7 @@ if __name__ == "__main__":
                             text = re.sub(r'\n?#<celery>([\s\S]*?)\n#</celery>', r'\1', text)
                             text = re.sub(r'\n?#<not_celery>([\s\S]*?)\n#</not_celery>', '', text)
                         else:
+                            text = re.sub(r'\n?#<not_celery>([\s\S]*?)\n#</not_celery>', r'\1', text)
                             text = re.sub(r'\n?#<celery>([\s\S]*?)\n#</celery>', '', text)
                         if use_websockets:
                             text = re.sub(r'\n?#<websockets>([\s\S]*?)\n#</websockets>', r'\1', text)
