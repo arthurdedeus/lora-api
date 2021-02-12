@@ -47,6 +47,7 @@ if __name__ == "__main__":
         use_socials = True if input(
             'Is this project using Social Accounts (e.g. Google, Facebook)? [y/N]\n') == 'y' else False
 
+    use_redis = use_celery or use_websockets
     FILES_TO_DELETE = list()
     if not use_celery:
         FILES_TO_DELETE += CELERY_EXCLUSIVE_FILES
@@ -79,6 +80,10 @@ if __name__ == "__main__":
                         text = text.replace('boilerplate', name.lower())
                         text = text.replace('Boilerplate', name)
 
+                        if use_redis:
+                            text = re.sub(r'\n?#<redis>([\s\S]*?)\n#</redis>', r'\1', text)
+                        else:
+                            text = re.sub(r'\n?#<redis>([\s\S]*?)\n#</redis>', '', text)
                         if use_celery:
                             text = re.sub(r'\n?#<celery>([\s\S]*?)\n#</celery>', r'\1', text)
                         else:

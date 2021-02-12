@@ -364,15 +364,19 @@ if not DEBUG and ENVIRONMENT != 'test':
     EMAIL_BACKEND = 'django_amazon_ses.EmailBackend'
     AWS_DEFAULT_REGION = 'us-west-2'
 
-#<celery>
+#<redis>
 ###
-# Celery and Redis
+# Redis
 ###
-
 REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
 REDIS_PORT = os.environ.get('REDIS_PORT', '6379')
 REDIS_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}'
+#</redis>
 
+#<celery>
+###
+# Celery
+###
 CELERY_URL = f'{REDIS_URL}/2'
 CELERY_DEFAULT_QUEUE = os.environ.get('CELERY_DEFAULT_QUEUE', ENVIRONMENT)
 #</celery>
@@ -381,10 +385,6 @@ CELERY_DEFAULT_QUEUE = os.environ.get('CELERY_DEFAULT_QUEUE', ENVIRONMENT)
 ###
 # Channels
 ###
-REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
-REDIS_PORT = os.environ.get('REDIS_PORT', '6379')
-REDIS_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}'
-
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
