@@ -17,6 +17,7 @@ services:
     environment:
       - SERVICES=s3
       - DEFAULT_REGION=us-west-1
+
 #<redis>
   redis:
     image: redis:5.0
