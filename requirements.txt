@@ -61,4 +61,4 @@ urllib3>=1.26.2
 Pillow==8.1.0
 
 # Docs
-drf-yasg==1.17.1
+drf-yasg==1.20.0
