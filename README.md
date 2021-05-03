@@ -1,7 +1,7 @@
 # Django Boilerplate
 
 This is the JungleDevs boilerplate for Django Applications. \
-It uses Django 3.0.3 + Docker. Two options of databases are currently supported. The basic structure for authentication is provided, as well as the support for authentication using social accounts. We are also using [localstack](https://github.com/localstack/localstack) to emulate AWS S3 services.
+It uses Django 3.1.8 + Docker. Two options of databases are currently supported. The basic structure for authentication is provided, as well as the support for authentication using social accounts. We are also using [localstack](https://github.com/localstack/localstack) to emulate AWS S3 services.
 
 ## Requirements
 
