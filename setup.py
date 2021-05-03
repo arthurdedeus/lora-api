@@ -132,6 +132,10 @@ if __name__ == "__main__":
 
         virtualenv -p python3 venv
         source venv/bin/activate
+- For macOS:
+  - Install homebrew: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` 
+  - Install basic macOS dependencies `brew install postgres cairo pango gdk-pixbuf libffi` 
+- Install basic macOS dependencies `brew install postgres cairo pango gdk-pixbuf libffi`
 - Install the requirements `pip install -r requirements.txt`
 - Start the dockers `docker-compose up` with the database and the localstack
 - Run the server with `python manage.py runserver 8000`
