@@ -44,5 +44,6 @@ else
         --log-level=info \
         --log-file=/usr/src/logs/gunicorn.log \
         --access-logfile=/usr/src/logs/access.log \
+        --access-logformat '%({x-forwarded-for}i)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"' \
         "$@"
 fi
