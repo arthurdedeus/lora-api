@@ -58,7 +58,7 @@ channels-redis==3.2.0
 requests==2.25.1
 sentry-sdk==0.19.5
 urllib3>=1.26.2
-Pillow==8.1.1
+Pillow==8.2.0
 
 # Docs
 drf-yasg==1.20.0
