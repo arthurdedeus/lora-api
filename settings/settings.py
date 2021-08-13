@@ -24,7 +24,7 @@ from sentry_sdk.integrations.django import DjangoIntegration
 ###
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 dotenv.read_dotenv(os.path.join(BASE_DIR, '.env'))
-ENVIRONMENT = os.environ.get('ENVIRONMENT')
+ENVIRONMENT = 'Development'
 LOAD_ENVS_FROM_FILE = True if os.environ.get('LOAD_ENVS_FROM_FILE', False) == 'True' else False
 
 env_file = 'envs-production.json' if ENVIRONMENT == 'production' else 'envs-staging.json'
@@ -36,7 +36,7 @@ if not LOAD_ENVS_FROM_FILE:
 # Security
 ###
 SECRET_KEY = os.environ.get('SECRET_KEY')
-DEBUG = ENVIRONMENT == 'development' or os.environ.get('DEBUG', False)
+DEBUG = True
 
 ALLOWED_HOSTS = [
     '.us-west-2.elb.amazonaws.com',
