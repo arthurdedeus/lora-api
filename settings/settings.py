@@ -74,6 +74,7 @@ INSTALLED_APPS = [
 
     # Applications
     'accounts',
+    'sensors',
 
     # Third party django mods
     'drf_yasg',
