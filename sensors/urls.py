@@ -22,7 +22,7 @@ router = routers.SimpleRouter()
 urlpatterns = [
     re_path(
         r'^fucas-webhook/$',
-        views.fucas_webhook.as_view(),
+        views.fucas_webhook,
         name='fucas_webhook',
     ),
     re_path(r'^', include(router.urls)),

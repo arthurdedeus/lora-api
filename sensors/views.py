@@ -15,8 +15,8 @@ def fucas_webhook(request):
         jsondata = request.body.decode('utf8').replace("'", '"').replace('\n', '')
         data = json.loads(jsondata)
         print({
-            'service': 'credpago',
-            'msg': 'CREDPAGO_WEBHOOK_RECEIVED',
+            'service': 'sensor',
+            'msg': 'WEBHOOK_RECEIVED',
             'payload': str(data),
         })
         return HttpResponse(status=status.HTTP_204_NO_CONTENT)
