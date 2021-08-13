@@ -12,7 +12,7 @@ from rest_framework import status
 def fucas_webhook(request):
     try:
         # Retrieve and clean data from request
-        jsondata = request.body.decode('utf8').replace("'", '"').replace('\n', '')
+        jsondata = request.body.decode('utf8')
         data = json.loads(jsondata)
         print({
             'service': 'sensor',
