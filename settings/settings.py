@@ -14,6 +14,8 @@ from pathlib import Path
 
 import dj_database_url
 
+ENVIRONMENT = 'Development'
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -42,12 +44,46 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+
+    # Rest Framework
+    'rest_framework',
+    'rest_framework.authtoken',
+
+    # Storage
+    'storages',
+
+    # Rest Auth
+    'rest_auth',
+    'rest_auth.registration',
+
+    # Allauth
+    'allauth',
+    'allauth.account',
+
+    # Social Applications
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+
+    # Cors
+    'corsheaders',
+
+    # Channels
+    'channels',
+
+    # Applications
+    'accounts',
+
+    # Third party django mods
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -74,7 +110,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'stonks_api.wsgi.application'
+WSGI_APPLICATION = 'settings.wsgi.application'
 
 
 # Database
@@ -135,3 +171,38 @@ STATICFILES_DIRS = [
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_FOLDER = 'media'
+
+###
+# Rest Framework
+###
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20
+}
+
+###
+# Authentication
+###
+AUTH_USER_MODEL = 'accounts.User'
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+REST_AUTH_SERIALIZERS = {
+    'TOKEN_SERIALIZER': 'accounts.api.v1.serializers.UserTokenSerializer',
+    'PASSWORD_RESET_SERIALIZER': 'accounts.api.v1.serializers.PasswordResetSerializer',
+}
+
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+ASGI_APPLICATION = 'settings.routing.application'
