@@ -17,7 +17,9 @@ def fucas_webhook(request):
         print({
             'service': 'sensor',
             'msg': 'WEBHOOK_RECEIVED',
-            'payload': str(data),
+            'device_id': data.get('device_id', None),
+            'received_at': data.get('received_at', None),
+            'payload': data
         })
         return HttpResponse(status=status.HTTP_204_NO_CONTENT)
     except BaseException as e:
