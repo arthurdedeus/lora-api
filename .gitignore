@@ -100,3 +100,4 @@ docker/db/
 # Terraform
 infrastructure/.terraform
 
+db.sqlite3
