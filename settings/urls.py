@@ -41,6 +41,7 @@ urlpatterns = [
 
     # Applications
     re_path(r'^', include('accounts.urls')),
+    re_path(r'^', include('sensors.urls')),
 ]
 
 if settings.ENVIRONMENT != 'production':
