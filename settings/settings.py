@@ -144,7 +144,16 @@ WSGI_APPLICATION = 'settings.wsgi.application'
 # Database
 ###
 DATABASE_URL = os.environ.get('DATABASE_URL')
-DATABASES = {'default': dj_database_url.parse(DATABASE_URL)}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'mydatabase',
+        'USER': 'mydatabaseuser',
+        'PASSWORD': 'mypassword',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
+}
 DATABASES['default']['ATOMIC_REQUESTS'] = True
 
 ###
