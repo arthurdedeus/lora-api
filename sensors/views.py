@@ -14,7 +14,7 @@ import sensors.models as models
 @require_http_methods(["POST"])
 def fucas_webhook(request):
     def get_sensor_instance(data):
-        dev_eui = data['payload']['end_device_ids']['dev_eui']
+        dev_eui = data['end_device_ids']['dev_eui']
         sensor, created = models.Sensor.objects.get_or_create(dev_eui=dev_eui)
         return sensor
 
@@ -22,6 +22,8 @@ def fucas_webhook(request):
         # Retrieve and clean data from request
         jsondata = request.body.decode('utf8')
         data = json.loads(jsondata)
+        if data.get('simulated', None):
+            return HttpResponse(status=status.HTTP_418_IM_A_TEAPOT)
         print({
             'service': 'sensor',
             'msg': 'WEBHOOK_RECEIVED',
@@ -32,7 +34,7 @@ def fucas_webhook(request):
 
         # Get sensor and register log
         sensor = get_sensor_instance(data=data)
-        decoded_payload = data['payload']['uplink_message']['decoded_payload']
+        decoded_payload = data['uplink_message']['decoded_payload']
         log = models.Log.objects.create(
             sensor=sensor,
             timestamp=timezone.now(),
@@ -45,7 +47,6 @@ def fucas_webhook(request):
         print({
             'service': 'sensor',
             'msg': 'WEBHOOK_ERROR',
-            'error': e.__str__(),
-            'payload': data
+            'error': str(e),
         })
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
