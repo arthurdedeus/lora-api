@@ -42,4 +42,10 @@ def fucas_webhook(request):
         return HttpResponse(status=status.HTTP_204_NO_CONTENT)
 
     except BaseException as e:
+        print({
+            'service': 'sensor',
+            'msg': 'WEBHOOK_ERROR',
+            'error': e.__str__(),
+            'payload': data
+        })
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
