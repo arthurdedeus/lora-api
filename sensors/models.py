@@ -32,6 +32,7 @@ class Log(models.Model):
         'sensors.Sensor',
         on_delete=models.SET_NULL,
         null=True,
+        related_name='logs',
     )
     # Log data
     timestamp = models.DateTimeField(
@@ -97,3 +98,35 @@ class Log(models.Model):
 
     def __str__(self):
         return self.timestamp.strftime('%d/%m/%Y - %H:%M')
+
+
+class Warning(models.Model):
+    # Choices
+    class MeasurementChoices(models.TextChoices):
+        TEMPERATURE = 'temperature', _('Temperature')
+        HUMIDITY = 'humidity', _('Humidity')
+        PRESSURE = 'pressure', _('Pressure')
+        BAT_VOLTAGE = 'bat_voltage', _('Bat Voltage')
+
+    # Relations
+    sensor = models.ForeignKey(
+        'sensors.Sensor',
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='warnings',
+    )
+    # Warning data
+    timestamp = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text=_('Time when the warning was created')
+    )
+    measurement = models.CharField(
+        max_length=16,
+        choices=MeasurementChoices.choices,
+    )
+    message = models.TextField(
+        null=True,
+        blank=True,
+    )
+

@@ -13,3 +13,8 @@ class SensorAdmin(admin.ModelAdmin):
 @admin.register(models.Log)
 class LogAdmin(admin.ModelAdmin):
     list_display = ('sensor', 'timestamp')
+
+
+@admin.register(models.Warning)
+class WarningAdmin(admin.ModelAdmin):
+    list_display = ('sensor', 'measurement', 'timestamp')
