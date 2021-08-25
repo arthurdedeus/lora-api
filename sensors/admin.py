@@ -18,3 +18,8 @@ class LogAdmin(admin.ModelAdmin):
 @admin.register(models.Warning)
 class WarningAdmin(admin.ModelAdmin):
     list_display = ('sensor', 'measurement', 'timestamp')
+
+
+@admin.register(models.WarningThreshold)
+class WarningAdmin(admin.ModelAdmin):
+    list_display = ('sensor',)

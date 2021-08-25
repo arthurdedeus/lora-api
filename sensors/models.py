@@ -130,3 +130,54 @@ class Warning(models.Model):
         blank=True,
     )
 
+
+class WarningThreshold(models.Model):
+    # Relations
+    sensor = models.OneToOneField(
+        'sensors.Sensor',
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='warning_thresholds',
+    )
+
+    # WarninigThresholds data
+    max_temperature = models.FloatField(
+        null=True,
+        blank=True,
+        help_text=_('Maximum temperature threshold'),
+    )
+    min_temperature = models.FloatField(
+        null=True,
+        blank=True,
+        help_text=_('Minimum temperature threshold'),
+    )
+    max_humidity = models.FloatField(
+        null=True,
+        blank=True,
+        help_text=_('Maximum humidity threshold'),
+    )
+    min_humidity = models.FloatField(
+        null=True,
+        blank=True,
+        help_text=_('Minimum humidity threshold'),
+    )
+    max_pressure = models.FloatField(
+        null=True,
+        blank=True,
+        help_text=_('Maximum pressure threshold'),
+    )
+    min_pressure = models.FloatField(
+        null=True,
+        blank=True,
+        help_text=_('Minimum pressure threshold'),
+    )
+    max_battery = models.FloatField(
+        null=True,
+        blank=True,
+        help_text=_('Maximum battery voltage threshold'),
+    )
+    min_battery = models.FloatField(
+        null=True,
+        blank=True,
+        help_text=_('Minimum battery voltage threshold'),
+    )
