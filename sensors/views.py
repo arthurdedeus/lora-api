@@ -35,7 +35,7 @@ def fucas_webhook(request):
         # Get sensor and register log
         sensor = get_sensor_instance(data=data)
         decoded_payload = data['uplink_message']['decoded_payload']
-        log = models.Log.objects.create(
+        models.Log.objects.create(
             sensor=sensor,
             timestamp=timezone.now(),
             **decoded_payload
