@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms.models import model_to_dict
 from django.utils.translation import ugettext_lazy as _
 
 # Create your models here.
@@ -99,6 +100,12 @@ class Log(models.Model):
     def __str__(self):
         return self.timestamp.strftime('%d/%m/%Y - %H:%M')
 
+    def measurements(self):
+        return model_to_dict(
+            self,
+            fields=['pressure', 'temperature', 'humidity', 'bat_voltage']
+        )
+
 
 class Warning(models.Model):
     # Choices
@@ -129,6 +136,9 @@ class Warning(models.Model):
         null=True,
         blank=True,
     )
+
+    def __str__(self):
+        return self.get_measurement_display()
 
 
 class WarningThreshold(models.Model):
@@ -181,3 +191,13 @@ class WarningThreshold(models.Model):
         blank=True,
         help_text=_('Minimum battery voltage threshold'),
     )
+
+    def get_thresholds(self, quantity):
+        if quantity == 'temperature':
+            return self.max_temperature, self.min_temperature
+        elif quantity == 'humidity':
+            return self.max_humidity, self.min_humidity
+        elif quantity == 'pressure':
+            return self.max_pressure, self.min_pressure
+        elif quantity == 'bat_voltage':
+            return self.max_battery, self.min_battery
