@@ -1,7 +1,11 @@
-# Django Boilerplate
+# LoRa API
 
-This is the JungleDevs boilerplate for Django Applications. \
-It uses Django 3.1.8 + Docker. Two options of databases are currently supported. The basic structure for authentication is provided, as well as the support for authentication using social accounts. We are also using [localstack](https://github.com/localstack/localstack) to emulate AWS S3 services.
+API desenvolvida para a disciplina EEL7814 - Projeto Nível I em Telecomunicações I.
+A API conta com um endpoint para receber a requisição do webhook da TTN. Através dele, os dados
+do dispositivo são recebidos pela API, onde então são registrados no banco de dados da aplicação.
+
+Agradecimento especial à [Jungle Devs](https://github.com/JungleDevs) por disponibilizar o
+boilerplate do Django para o desenvolvimento do projeto.
 
 ## Requirements
 
