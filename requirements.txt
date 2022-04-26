@@ -40,7 +40,7 @@ ipython-genutils==0.2.0
 
 #<celery>
 # Celery
-celery==5.0.5
+celery==5.2.2
 #</celery>
 
 #<redis>
