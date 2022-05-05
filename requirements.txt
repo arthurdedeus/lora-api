@@ -62,3 +62,8 @@ Pillow==9.0.1
 
 # Docs
 drf-yasg==1.20.0
+
+# GCP
+django-storages[google]
+django-environ==0.8.1
+google-cloud-secret-manager==2.10.0

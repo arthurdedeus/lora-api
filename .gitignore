@@ -20,6 +20,7 @@ lib64/
 parts/
 sdist/
 var/
+staticfiles/
 *.egg-info/
 .installed.cfg
 *.egg
@@ -76,7 +77,7 @@ target/
 celerybeat-schedule
 
 # dotenv
-.env
+development/.env
 
 # virtualenv
 venv/
