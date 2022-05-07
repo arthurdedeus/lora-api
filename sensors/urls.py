@@ -15,6 +15,7 @@ import sensors.views as views
 ###
 """ Main router """
 router = routers.SimpleRouter()
+router.register(r'sensors', views.SensorViewSet, basename='sensors')
 
 ###
 # URLs

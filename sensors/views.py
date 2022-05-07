@@ -1,12 +1,17 @@
 import json
+import datetime
 
+from django.db.models import Prefetch
 from django.http import HttpResponse
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.viewsets import ModelViewSet
 
 import sensors.models as models
+from sensors.serializers import SensorSerializer
 
 
 # Create your views here.
@@ -50,3 +55,13 @@ def fucas_webhook(request):
             'error': str(e),
         })
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+
+class SensorViewSet(ModelViewSet):
+    serializer_class = SensorSerializer
+    permission_classes = [IsAuthenticated, ]
+
+    def get_queryset(self):
+        last_90_days = timezone.now() - datetime.timedelta(days=90)
+        logs = models.Log.objects.filter(timestamp__gte=last_90_days)
+        return models.Sensor.objects.all().prefetch_related(Prefetch('logs', queryset=logs))
