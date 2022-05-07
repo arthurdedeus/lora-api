@@ -11,6 +11,8 @@ from sensors.models import Log
 def check_thresholds(instance, created, **kwargs):
     if created:
         sensor = instance.sensor
+        if not hasattr(sensor, 'warning_thresholds'):
+            return
         thresholds = sensor.warning_thresholds
 
         warnings_to_create = []

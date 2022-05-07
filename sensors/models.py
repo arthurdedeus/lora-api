@@ -2,8 +2,11 @@ from django.db import models
 from django.forms.models import model_to_dict
 from django.utils.translation import ugettext_lazy as _
 
+from helpers.models import TimestampModel
+
+
 # Create your models here.
-class Sensor(models.Model):
+class Sensor(TimestampModel):
     name = models.CharField(
         max_length=128,
         null=True,
@@ -27,7 +30,7 @@ class Sensor(models.Model):
         return str(self.name)
 
 
-class Log(models.Model):
+class Log(TimestampModel):
     # Relations
     sensor = models.ForeignKey(
         'sensors.Sensor',
@@ -107,7 +110,7 @@ class Log(models.Model):
         )
 
 
-class Warning(models.Model):
+class Warning(TimestampModel):
     # Choices
     class MeasurementChoices(models.TextChoices):
         TEMPERATURE = 'temperature', _('Temperature')
@@ -141,7 +144,7 @@ class Warning(models.Model):
         return self.get_measurement_display()
 
 
-class WarningThreshold(models.Model):
+class WarningThreshold(TimestampModel):
     # Relations
     sensor = models.OneToOneField(
         'sensors.Sensor',
