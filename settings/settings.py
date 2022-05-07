@@ -19,7 +19,6 @@ import environ
 import google.auth
 from google.cloud import secretmanager
 
-ENVIRONMENT = 'Development'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,8 +26,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = [
     'ttn-integration.herokuapp.com',
@@ -200,10 +197,14 @@ if os.path.isfile(env_file):
     print("Use a local secret file")
 
     env.read_env(env_file)
+    DEBUG = True
+    ENVIRONMENT = 'development'
 # ...
 elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
     # Pull secrets from Secret Manager
     print("Pull secrets from Secret Manager")
+    DEBUG = False
+    ENVIRONMENT = 'production'
 
     project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
     print(f"Project ID: {project_id}")
@@ -237,19 +238,18 @@ DATABASES = {"default": env.db()}
 if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
     DATABASES["default"]["HOST"] = "127.0.0.1"
     DATABASES["default"]["PORT"] = 5432
-
-# Re-add when debug is configured via env variable
-# DATABASES["default"]["ENGINE"] = "django.db.backends.sqlite3"
-# DATABASES["default"]["NAME"] = os.path.join(BASE_DIR, "db.sqlite3")
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
+elif ENVIRONMENT == "development":
+    DATABASES["default"]["ENGINE"] = "django.db.backends.sqlite3"
+    DATABASES["default"]["NAME"] = os.path.join(BASE_DIR, "db.sqlite3")
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 # Define static storage via django-storages[google]
-GS_BUCKET_NAME = env("GS_BUCKET_NAME")
+GS_BUCKET_NAME = env("GS_BUCKET_NAME", None)
 STATIC_URL = "/static/"
 DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
 STATICFILES_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
