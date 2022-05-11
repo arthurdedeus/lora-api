@@ -22,9 +22,9 @@ router.register(r'sensors', views.SensorViewSet, basename='sensors')
 ###
 urlpatterns = [
     re_path(
-        r'^fucas-webhook/$',
-        views.fucas_webhook,
-        name='fucas_webhook',
+        r'^webhook/$',
+        views.webhook,
+        name='webhook',
     ),
     re_path(r'^', include(router.urls)),
 ]

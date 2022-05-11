@@ -17,7 +17,7 @@ from sensors.serializers import SensorSerializer
 # Create your views here.
 @csrf_exempt
 @require_http_methods(["POST"])
-def fucas_webhook(request):
+def webhook(request):
     def get_sensor_instance(data):
         dev_eui = data['end_device_ids']['dev_eui']
         sensor, created = models.Sensor.objects.get_or_create(dev_eui=dev_eui)
