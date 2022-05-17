@@ -17,6 +17,9 @@ import sensors.views as views
 router = routers.SimpleRouter()
 router.register(r'sensors', views.SensorViewSet, basename='sensors')
 
+sensors_router = routers.NestedSimpleRouter(router, r'sensors', lookup='sensor')
+sensors_router.register(r'logs', views.LogViewSet, basename='logs')
+
 ###
 # URLs
 ###
@@ -27,4 +30,5 @@ urlpatterns = [
         name='webhook',
     ),
     re_path(r'^', include(router.urls)),
+    re_path(r'^', include(sensors_router.urls)),
 ]

@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 import sensors.models as models
-from sensors.serializers import SensorSerializer
+from sensors.serializers import SensorSerializer, SensorLogSerializer
 
 
 # Create your views here.
@@ -65,3 +65,22 @@ class SensorViewSet(ModelViewSet):
         last_90_days = timezone.now() - datetime.timedelta(days=90)
         logs = models.Log.objects.filter(timestamp__gte=last_90_days)
         return models.Sensor.objects.all().prefetch_related(Prefetch('logs', queryset=logs))
+
+    def retrieve(self, request, *args, **kwargs):
+        ret = super().retrieve(request, *args, **kwargs)
+        return ret
+
+
+class LogViewSet(ModelViewSet):
+    serializer_class = SensorLogSerializer
+    permission_classes = [IsAuthenticated, ]
+    pagination_class = None
+
+    def get_queryset(self):
+        last_90_days = timezone.now() - datetime.timedelta(days=90)
+        logs = models.Log.objects.filter(timestamp__gte=last_90_days)
+        return models.Sensor.objects.filter(
+            id=self.kwargs.get('sensor_pk')
+        ).prefetch_related(
+            Prefetch('logs', queryset=logs)
+        )

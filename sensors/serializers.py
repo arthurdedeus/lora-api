@@ -10,6 +10,14 @@ class LogSerializer(serializers.ModelSerializer):
         fields = ('id', 'timestamp', 'pressure', 'temperature', 'humidity')
 
 
+class SensorLogSerializer(serializers.ModelSerializer):
+    logs = LogSerializer(many=True)
+
+    class Meta:
+        model = Sensor
+        fields = ('id', 'name', 'logs')
+
+
 class SensorSerializer(serializers.ModelSerializer):
     metrics = serializers.SerializerMethodField()
     logs = LogSerializer(many=True)
