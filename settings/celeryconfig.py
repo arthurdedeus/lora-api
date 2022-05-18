@@ -11,10 +11,10 @@ from django.conf import settings
 ###
 task_default_queue = settings.CELERY_DEFAULT_QUEUE
 broker_url = settings.CELERY_URL
-accept_content = ['json']
-task_serializer = 'json'
-result_serializer = 'json'
-timezone = 'America/New_York'
+accept_content = ["json"]
+task_serializer = "json"
+result_serializer = "json"
+timezone = "America/New_York"
 
-if settings.ENVIRONMENT == 'test':
+if settings.ENVIRONMENT == "test":
     task_always_eager = True

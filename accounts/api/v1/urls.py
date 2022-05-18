@@ -21,10 +21,10 @@ from rest_framework_nested import routers
 from .views import (
     ChangeEmailViewSet,
     ChangeEmailConfirmationViewSet,
-#<socials>
+    # <socials>
     FacebookLogin,
     GoogleLogin,
-#</socials>
+    # </socials>
 )
 
 ###
@@ -38,61 +38,61 @@ router = routers.SimpleRouter()
 ###
 urlpatterns = [
     re_path(
-        r'^login/$',
+        r"^login/$",
         LoginView.as_view(),
-        name='rest_login',
+        name="rest_login",
     ),
     re_path(
-        r'^logout/$',
+        r"^logout/$",
         LogoutView.as_view(),
-        name='rest_logout',
+        name="rest_logout",
     ),
     re_path(
-        r'^user/$',
+        r"^user/$",
         UserDetailsView.as_view(),
-        name='rest_user_details',
+        name="rest_user_details",
     ),
     re_path(
-        r'^change-password/$',
+        r"^change-password/$",
         PasswordChangeView.as_view(),
-        name='rest_password_change',
+        name="rest_password_change",
     ),
     re_path(
-        r'^change-email/(?P<uuid>[^/]+)/$',
+        r"^change-email/(?P<uuid>[^/]+)/$",
         ChangeEmailConfirmationViewSet.as_view(),
-        name='change-email-confirmation',
+        name="change-email-confirmation",
     ),
     re_path(
-        r'^change-email/$',
+        r"^change-email/$",
         ChangeEmailViewSet.as_view(),
-        name='change-email',
+        name="change-email",
     ),
     re_path(
-        r'^password/reset/$',
+        r"^password/reset/$",
         PasswordResetView.as_view(),
-        name='rest_password_reset',
+        name="rest_password_reset",
     ),
     re_path(
-        r'^password/reset/confirm/$',
+        r"^password/reset/confirm/$",
         PasswordResetConfirmView.as_view(),
-        name='rest_password_reset_confirm',
+        name="rest_password_reset_confirm",
     ),
     re_path(
-        r'^register/$',
+        r"^register/$",
         RegisterView.as_view(),
-        name='rest_register',
+        name="rest_register",
     ),
-#<socials>
+    # <socials>
     re_path(
-        r'^facebook/$',
+        r"^facebook/$",
         FacebookLogin.as_view(),
-        name='fb_login',
+        name="fb_login",
     ),
     re_path(
-        r'^google/$',
+        r"^google/$",
         GoogleLogin.as_view(),
-        name='google_login',
+        name="google_login",
     ),
-#</socials>
-    re_path(r'^', include(router.urls)),
+    # </socials>
+    re_path(r"^", include(router.urls)),
 ]

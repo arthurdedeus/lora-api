@@ -6,18 +6,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sensors', '0002_log_sensor'),
+        ("sensors", "0002_log_sensor"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='sensor',
-            name='app_eui',
-            field=models.CharField(blank=True, help_text='App EUI', max_length=256, null=True),
+            model_name="sensor",
+            name="app_eui",
+            field=models.CharField(
+                blank=True, help_text="App EUI", max_length=256, null=True
+            ),
         ),
         migrations.AlterField(
-            model_name='sensor',
-            name='dev_eui',
-            field=models.CharField(blank=True, help_text='Device EUI', max_length=256, null=True),
+            model_name="sensor",
+            name="dev_eui",
+            field=models.CharField(
+                blank=True, help_text="Device EUI", max_length=256, null=True
+            ),
         ),
     ]

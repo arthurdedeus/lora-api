@@ -7,35 +7,124 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Log',
+            name="Log",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('timestamp', models.DateTimeField(blank=True, help_text='Time when the log was received', null=True)),
-                ('pressure', models.FloatField(blank=True, help_text='Atmospheric pressure', null=True)),
-                ('temperature', models.FloatField(blank=True, help_text='Ambient temperature', null=True)),
-                ('humidity', models.FloatField(blank=True, help_text='Ambient humidity', null=True)),
-                ('accel_x_axis', models.FloatField(blank=True, help_text='Acceleration in x axis', null=True)),
-                ('accel_y_axis', models.FloatField(blank=True, help_text='Acceleration in y axis', null=True)),
-                ('accel_z_axis', models.FloatField(blank=True, help_text='Acceleration in z axis', null=True)),
-                ('gyro_x_axis', models.FloatField(blank=True, help_text='Gyroscope in x axis', null=True)),
-                ('gyro_y_axis', models.FloatField(blank=True, help_text='Gyroscope in y axis', null=True)),
-                ('gyro_z_axis', models.FloatField(blank=True, help_text='Gyroscope in z axis', null=True)),
-                ('magnometer', models.FloatField(blank=True, help_text='Magnometer', null=True)),
-                ('bat_voltage', models.FloatField(blank=True, help_text='Battery voltage', null=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "timestamp",
+                    models.DateTimeField(
+                        blank=True,
+                        help_text="Time when the log was received",
+                        null=True,
+                    ),
+                ),
+                (
+                    "pressure",
+                    models.FloatField(
+                        blank=True, help_text="Atmospheric pressure", null=True
+                    ),
+                ),
+                (
+                    "temperature",
+                    models.FloatField(
+                        blank=True, help_text="Ambient temperature", null=True
+                    ),
+                ),
+                (
+                    "humidity",
+                    models.FloatField(
+                        blank=True, help_text="Ambient humidity", null=True
+                    ),
+                ),
+                (
+                    "accel_x_axis",
+                    models.FloatField(
+                        blank=True, help_text="Acceleration in x axis", null=True
+                    ),
+                ),
+                (
+                    "accel_y_axis",
+                    models.FloatField(
+                        blank=True, help_text="Acceleration in y axis", null=True
+                    ),
+                ),
+                (
+                    "accel_z_axis",
+                    models.FloatField(
+                        blank=True, help_text="Acceleration in z axis", null=True
+                    ),
+                ),
+                (
+                    "gyro_x_axis",
+                    models.FloatField(
+                        blank=True, help_text="Gyroscope in x axis", null=True
+                    ),
+                ),
+                (
+                    "gyro_y_axis",
+                    models.FloatField(
+                        blank=True, help_text="Gyroscope in y axis", null=True
+                    ),
+                ),
+                (
+                    "gyro_z_axis",
+                    models.FloatField(
+                        blank=True, help_text="Gyroscope in z axis", null=True
+                    ),
+                ),
+                (
+                    "magnometer",
+                    models.FloatField(blank=True, help_text="Magnometer", null=True),
+                ),
+                (
+                    "bat_voltage",
+                    models.FloatField(
+                        blank=True, help_text="Battery voltage", null=True
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Sensor',
+            name="Sensor",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(blank=True, help_text='Name of the sensor', max_length=128, null=True)),
-                ('app_eui', models.FloatField(blank=True, help_text='App EUI', null=True)),
-                ('dev_eui', models.FloatField(blank=True, help_text='Device EUI', null=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        blank=True,
+                        help_text="Name of the sensor",
+                        max_length=128,
+                        null=True,
+                    ),
+                ),
+                (
+                    "app_eui",
+                    models.FloatField(blank=True, help_text="App EUI", null=True),
+                ),
+                (
+                    "dev_eui",
+                    models.FloatField(blank=True, help_text="Device EUI", null=True),
+                ),
             ],
         ),
     ]

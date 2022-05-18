@@ -16,12 +16,13 @@ from django.contrib.auth.models import (
 def get_user(scope):
     if "session" not in scope:
         raise ValueError(
-            "Cannot find session in scope. You should wrap your consumer in SessionMiddleware.")
+            "Cannot find session in scope. You should wrap your consumer in SessionMiddleware."
+        )
     user = None
-    query_string = scope.get('query_string', '').decode()
+    query_string = scope.get("query_string", "").decode()
     qs = parse.parse_qs(query_string)
-    if 'token' in qs:
-        user = User.objects.filter(auth_token__key=qs.get('token', [''])[0]).first()
+    if "token" in qs:
+        user = User.objects.filter(auth_token__key=qs.get("token", [""])[0]).first()
 
     return user or AnonymousUser()
 
@@ -37,4 +38,6 @@ class CustomAuthMiddleware(AuthMiddleware):
 
 
 # Handy shortcut for applying all three layers at once
-CustomAuthMiddlewareStack = lambda inner: CookieMiddleware(SessionMiddleware(CustomAuthMiddleware(inner)))
+CustomAuthMiddlewareStack = lambda inner: CookieMiddleware(
+    SessionMiddleware(CustomAuthMiddleware(inner))
+)

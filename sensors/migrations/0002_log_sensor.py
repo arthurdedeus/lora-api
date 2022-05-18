@@ -7,13 +7,17 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sensors', '0001_initial'),
+        ("sensors", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='log',
-            name='sensor',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='sensors.sensor'),
+            model_name="log",
+            name="sensor",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="sensors.sensor",
+            ),
         ),
     ]

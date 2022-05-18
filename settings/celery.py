@@ -15,8 +15,8 @@ logger = get_task_logger(__name__)
 ###
 # Main Configuration
 ###
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
 
-app = Celery('settings')
-app.config_from_object('settings.celeryconfig')
+app = Celery("settings")
+app.config_from_object("settings.celeryconfig")
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)

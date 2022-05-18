@@ -20,9 +20,14 @@ from rest_framework import (
 )
 from rest_framework.response import Response
 from rest_auth.registration.views import SocialLoginView
-#<socials>
-from accounts.custom_providers import CustomFacebookOAuth2Adapter, CustomGoogleOAuth2Adapter
-#</socials>
+
+# <socials>
+from accounts.custom_providers import (
+    CustomFacebookOAuth2Adapter,
+    CustomGoogleOAuth2Adapter,
+)
+
+# </socials>
 from accounts.models import (
     ChangeEmailRequest,
 )
@@ -46,10 +51,10 @@ class ChangeEmailViewSet(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
 
         user = request.user
-        email = serializer.data.get('email')
+        email = serializer.data.get("email")
 
         change_request, _ = ChangeEmailRequest.objects.update_or_create(
-            user=user, defaults={'email': email}
+            user=user, defaults={"email": email}
         )
 
         confirmation_link = HttpRequest.build_absolute_uri(
@@ -58,28 +63,26 @@ class ChangeEmailViewSet(generics.GenericAPIView):
 
         try:
             context = {
-                'email': user.email,
-                'confirmation_link': confirmation_link,
+                "email": user.email,
+                "confirmation_link": confirmation_link,
             }
-            html_email = render_to_string('account/change_email.html', context)
-            txt_email = render_to_string('account/change_email.txt', context)
+            html_email = render_to_string("account/change_email.html", context)
+            txt_email = render_to_string("account/change_email.txt", context)
             send_mail(
-                subject='Boilerplate - Email Confirmation',
+                subject="Boilerplate - Email Confirmation",
                 message=txt_email,
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 recipient_list=[email],
                 fail_silently=False,
-                html_message=html_email
+                html_message=html_email,
             )
         except SMTPException:
             return Response(
-                'Failed to send email',
+                "Failed to send email",
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
-        response_payload = {
-            'message': 'Confirmation email has been sent.'
-        }
+        response_payload = {"message": "Confirmation email has been sent."}
         return Response(response_payload, status=status.HTTP_200_OK)
 
 
@@ -88,28 +91,32 @@ class ChangeEmailConfirmationViewSet(generics.GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         try:
-            change_request = ChangeEmailRequest.objects.get(uuid=self.kwargs.get('uuid'))
+            change_request = ChangeEmailRequest.objects.get(
+                uuid=self.kwargs.get("uuid")
+            )
         except (ChangeEmailRequest.DoesNotExist, ValidationError):
-            raise Http404('No requests match the given UUID')
+            raise Http404("No requests match the given UUID")
 
         with transaction.atomic():
             user = change_request.user
             user.email = change_request.email
             allauth_email = user.emailaddress_set.first()
             allauth_email.email = change_request.email
-            user.save(update_fields=['email'])
-            allauth_email.save(update_fields=['email'])
+            user.save(update_fields=["email"])
+            allauth_email.save(update_fields=["email"])
             user.auth_token.delete()
 
             change_request.delete()
-        return render('account/change_email_done.html', {'first_name': user.first_name})
+        return render("account/change_email_done.html", {"first_name": user.first_name})
 
 
-#<socials>
+# <socials>
 class FacebookLogin(SocialLoginView):
     adapter_class = CustomFacebookOAuth2Adapter
 
 
 class GoogleLogin(SocialLoginView):
     adapter_class = CustomGoogleOAuth2Adapter
-#</socials>
+
+
+# </socials>

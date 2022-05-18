@@ -34,16 +34,16 @@ class ChangeEmailRequest(models.Model):
     uuid = models.UUIDField(
         default=uuid.uuid4,
         editable=False,
-        verbose_name=_('uuid'),
+        verbose_name=_("uuid"),
     )
 
     # User model
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
-        related_name='change_email_request',
-        verbose_name=_('user'),
+        related_name="change_email_request",
+        verbose_name=_("user"),
     )
 
     # Email
-    email = models.EmailField(verbose_name=_('email'))
+    email = models.EmailField(verbose_name=_("email"))

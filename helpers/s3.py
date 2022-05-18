@@ -21,8 +21,10 @@ class UploadFileTo(object):
 
     def __call__(self, instance, filename):
         filename_base, filename_ext = os.path.splitext(filename)
-        return '{0}/{1}{2}'.format(
+        return "{0}/{1}{2}".format(
             self.folder,
-            '{0}-{1}-{2}'.format(instance.uuid, self.suffix, timezone.now().isoformat()),
+            "{0}-{1}-{2}".format(
+                instance.uuid, self.suffix, timezone.now().isoformat()
+            ),
             filename_ext.lower(),
         )
