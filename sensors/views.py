@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 import sensors.models as models
-from sensors.serializers import SensorSerializer, SensorLogSerializer, DashboardDataSerializer
+from sensors.serializers import MetricsSerializer, SensorSerializer, SensorLogSerializer, DashboardDataSerializer
 
 
 # Create your views here.
@@ -90,6 +90,18 @@ class LogViewSet(ModelViewSet):
 
 class DashboardDataAPIView(RetrieveAPIView):
     serializer_class = DashboardDataSerializer
+    permission_classes = [IsAuthenticated, ]
+    queryset = models.Sensor.objects.all()
+    pagination_class = None
+
+    def get(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+
+class MetricsAPIView(RetrieveAPIView):
+    serializer_class = MetricsSerializer
     permission_classes = [IsAuthenticated, ]
     queryset = models.Sensor.objects.all()
     pagination_class = None
