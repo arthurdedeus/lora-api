@@ -230,6 +230,11 @@ if CLOUDRUN_SERVICE_URL:
 else:
     ALLOWED_HOSTS = ["*"]
 
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:19006',
+    'exp://192.168.100.30:19000'
+]
+
 # Use django-environ to parse the connection string
 
 DATABASES = {"default": env.db()}
