@@ -7,11 +7,13 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from rest_framework import status
+from rest_framework.generics import RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 import sensors.models as models
-from sensors.serializers import SensorSerializer, SensorLogSerializer
+from sensors.serializers import SensorSerializer, SensorLogSerializer, DashboardDataSerializer
 
 
 # Create your views here.
@@ -84,3 +86,15 @@ class LogViewSet(ModelViewSet):
         ).prefetch_related(
             Prefetch('logs', queryset=logs)
         )
+
+
+class DashboardDataAPIView(RetrieveAPIView):
+    serializer_class = DashboardDataSerializer
+    permission_classes = [IsAuthenticated, ]
+    queryset = models.Sensor.objects.all()
+    pagination_class = None
+
+    def get(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
