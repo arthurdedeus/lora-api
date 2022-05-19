@@ -1,3 +1,7 @@
+# [](https://github.com/arthurdedeus/lora-api/compare/v0.3.0...v) (2022-05-19)
+
+
+
 # [](https://github.com/arthurdedeus/lora-api/compare/v0.2.0...v) (2022-05-18)
 
 
