@@ -7,11 +7,12 @@ from sensors.models import Warning
 
 from sensors.models import Log
 
+
 @receiver(post_save, sender=Log)
 def check_thresholds(instance, created, **kwargs):
     if created:
         sensor = instance.sensor
-        if not hasattr(sensor, 'warning_thresholds'):
+        if not hasattr(sensor, "warning_thresholds"):
             return
         thresholds = sensor.warning_thresholds
 
@@ -25,8 +26,8 @@ def check_thresholds(instance, created, **kwargs):
                             sensor=sensor,
                             timestamp=timezone.now(),
                             measurement=quantity,
-                            message=f'A medida de {quantity} ultrapassou o limite máximo de {max_threshold}. '
-                                    f'O valor medido foi de {value}.'
+                            message=f"A medida de {quantity} ultrapassou o limite máximo de {max_threshold}. "
+                            f"O valor medido foi de {value}.",
                         )
                     )
                 if value < min_threshold:
@@ -35,8 +36,8 @@ def check_thresholds(instance, created, **kwargs):
                             sensor=sensor,
                             timestamp=timezone.now(),
                             measurement=quantity,
-                            message=f'A medida de {quantity} está abaixo do limite mínimo de {max_threshold}. '
-                                    f'O valor medido foi de {value}.'
+                            message=f"A medida de {quantity} está abaixo do limite mínimo de {max_threshold}. "
+                            f"O valor medido foi de {value}.",
                         )
                     )
 

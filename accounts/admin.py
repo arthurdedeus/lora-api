@@ -20,9 +20,17 @@ from . import models
 ###
 @admin.register(models.User)
 class UserAdmin(BaseUserAdmin):
-    list_display = ('id', 'email', 'username', 'is_active', 'last_login', 'date_joined',)
+    list_display = (
+        "id",
+        "email",
+        "username",
+        "is_active",
+        "last_login",
+        "date_joined",
+    )
+
 
 @admin.register(models.ChangeEmailRequest)
 class ChangeEmailRequestAdmin(admin.ModelAdmin):
-    list_display = ('email',)
-    readonly_fields = ('uuid',)
+    list_display = ("email",)
+    readonly_fields = ("uuid",)

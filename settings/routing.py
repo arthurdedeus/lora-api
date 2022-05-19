@@ -7,12 +7,16 @@ from .consumer import (
     WebsocketConsumer,
 )
 
-application = ProtocolTypeRouter({
-    "http": get_asgi_application(),
-    "websocket": CustomAuthMiddlewareStack(
-        URLRouter([
-            # Applications
-            re_path(r'^ws/$', WebsocketConsumer.as_asgi()),
-        ]),
-    )
-})
+application = ProtocolTypeRouter(
+    {
+        "http": get_asgi_application(),
+        "websocket": CustomAuthMiddlewareStack(
+            URLRouter(
+                [
+                    # Applications
+                    re_path(r"^ws/$", WebsocketConsumer.as_asgi()),
+                ]
+            ),
+        ),
+    }
+)

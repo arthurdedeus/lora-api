@@ -6,17 +6,14 @@ Accounts: Custom providers
 ###
 import requests
 from allauth.socialaccount.adapter import get_adapter
-from allauth.socialaccount.models import (
-    SocialLogin,
-    SocialAccount
-)
+from allauth.socialaccount.models import SocialLogin, SocialAccount
 from allauth.socialaccount.providers.facebook.provider import (
     GRAPH_API_URL,
-    FacebookProvider
+    FacebookProvider,
 )
 from allauth.socialaccount.providers.facebook.views import (
     FacebookOAuth2Adapter,
-    compute_appsecret_proof
+    compute_appsecret_proof,
 )
 from allauth.socialaccount.providers.google.provider import GoogleProvider
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
@@ -30,17 +27,11 @@ def custom_social_login_from_response(provider, request, response):
     uid = provider.extract_uid(response)
     extra_data = provider.extract_extra_data(response)
     common_fields = provider.extract_common_fields(response)
-    socialaccount = SocialAccount(
-        extra_data=extra_data, uid=uid, provider=provider.id
-    )
-    common_fields['photo'] = socialaccount.get_avatar_url()
+    socialaccount = SocialAccount(extra_data=extra_data, uid=uid, provider=provider.id)
+    common_fields["photo"] = socialaccount.get_avatar_url()
     email_addresses = provider.extract_email_addresses(response)
-    provider.cleanup_email_addresses(
-        common_fields.get('email'), email_addresses
-    )
-    sociallogin = SocialLogin(
-        account=socialaccount, email_addresses=email_addresses
-    )
+    provider.cleanup_email_addresses(common_fields.get("email"), email_addresses)
+    sociallogin = SocialLogin(account=socialaccount, email_addresses=email_addresses)
     if request.user.is_authenticated:
         sociallogin.user = request.user
         sa = SocialAccount.objects.filter(uid=uid, provider=provider.id).first()
@@ -59,12 +50,13 @@ def custom_social_login_from_response(provider, request, response):
 def fb_custom_login(request, app, token):
     provider = CustomFacebookProvider(request)
     resp = requests.get(
-        GRAPH_API_URL + '/me',
+        GRAPH_API_URL + "/me",
         params={
-            'fields': ','.join(provider.get_fields()),
-            'access_token': token.token,
-            'appsecret_proof': compute_appsecret_proof(app, token)
-        })
+            "fields": ",".join(provider.get_fields()),
+            "access_token": token.token,
+            "appsecret_proof": compute_appsecret_proof(app, token),
+        },
+    )
     resp.raise_for_status()
     extra_data = resp.json()
     login = provider.sociallogin_from_response(request, extra_data)
@@ -74,7 +66,7 @@ def fb_custom_login(request, app, token):
 def google_custom_login(request, app, token, profile_url):
     provider = CustomGoogleProvider(request)
     resp = requests.get(
-        profile_url, params={'access_token': token.token, 'alt': 'json'}
+        profile_url, params={"access_token": token.token, "alt": "json"}
     )
     resp.raise_for_status()
     extra_data = resp.json()

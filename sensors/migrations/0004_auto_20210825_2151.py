@@ -7,23 +7,62 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sensors', '0003_auto_20210819_2318'),
+        ("sensors", "0003_auto_20210819_2318"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='log',
-            name='sensor',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='logs', to='sensors.sensor'),
+            model_name="log",
+            name="sensor",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="logs",
+                to="sensors.sensor",
+            ),
         ),
         migrations.CreateModel(
-            name='Warning',
+            name="Warning",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('timestamp', models.DateTimeField(blank=True, help_text='Time when the warning was created', null=True)),
-                ('measurement', models.CharField(choices=[('temperature', 'Temperature'), ('humidity', 'Humidity'), ('pressure', 'Pressure'), ('bat_voltage', 'Bat Voltage')], max_length=16)),
-                ('message', models.TextField(blank=True, null=True)),
-                ('sensor', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='warnings', to='sensors.sensor')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "timestamp",
+                    models.DateTimeField(
+                        blank=True,
+                        help_text="Time when the warning was created",
+                        null=True,
+                    ),
+                ),
+                (
+                    "measurement",
+                    models.CharField(
+                        choices=[
+                            ("temperature", "Temperature"),
+                            ("humidity", "Humidity"),
+                            ("pressure", "Pressure"),
+                            ("bat_voltage", "Bat Voltage"),
+                        ],
+                        max_length=16,
+                    ),
+                ),
+                ("message", models.TextField(blank=True, null=True)),
+                (
+                    "sensor",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="warnings",
+                        to="sensors.sensor",
+                    ),
+                ),
             ],
         ),
     ]

@@ -26,20 +26,23 @@ class UserTokenSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TokenModel
-        fields = ('key', 'user',)
+        fields = (
+            "key",
+            "user",
+        )
 
 
 class ChangeEmailSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
 
     def validate_email(self, email):
-        user = self.context['request'].user
+        user = self.context["request"].user
 
         if user.email == email:
-            raise ValidationError('Cannot change to the same email.')
+            raise ValidationError("Cannot change to the same email.")
 
         if User.objects.exclude(id=user.id).filter(email=email).exists():
-            raise ValidationError('Another account already exists with this email.')
+            raise ValidationError("Another account already exists with this email.")
 
         return email
 
@@ -49,7 +52,7 @@ class PasswordResetSerializer(BasePasswordResetSerializer):
 
     def get_email_options(self):
         return {
-            'subject_template_name': 'account/password_reset_subject.txt',
-            'email_template_name': 'account/password_reset_message.txt',
-            'html_email_template_name': 'account/password_reset_message.html',
+            "subject_template_name": "account/password_reset_subject.txt",
+            "email_template_name": "account/password_reset_message.txt",
+            "html_email_template_name": "account/password_reset_message.html",
         }

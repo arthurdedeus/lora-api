@@ -1,1 +1,1 @@
-default_app_config = 'sensors.apps.SensorsConfig'
+default_app_config = "sensors.apps.SensorsConfig"
