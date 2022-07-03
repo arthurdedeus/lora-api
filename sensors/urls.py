@@ -17,9 +17,6 @@ import sensors.views as views
 router = routers.SimpleRouter()
 router.register(r"sensors", views.SensorViewSet, basename="sensors")
 
-sensors_router = routers.NestedSimpleRouter(router, r"sensors", lookup="sensor")
-sensors_router.register(r"logs", views.LogViewSet, basename="logs")
-
 ###
 # URLs
 ###
@@ -39,6 +36,9 @@ urlpatterns = [
         views.MetricsAPIView.as_view(),
         name="metrics",
     ),
+    re_path(
+        r"sensors/(?P<pk>\d+)/logs",
+        views.LogViewSet.as_view(),
+    ),
     re_path(r"^", include(router.urls)),
-    re_path(r"^", include(sensors_router.urls)),
 ]
