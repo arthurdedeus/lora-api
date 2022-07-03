@@ -1,5 +1,5 @@
-import json
 import datetime
+import json
 
 from django.db.models import Prefetch
 from django.http import HttpResponse
@@ -14,10 +14,10 @@ from rest_framework.viewsets import ModelViewSet
 
 import sensors.models as models
 from sensors.serializers import (
+    DashboardDataSerializer,
+    LogSerializer,
     MetricsSerializer,
     SensorSerializer,
-    SensorLogSerializer,
-    DashboardDataSerializer,
 )
 
 
@@ -84,19 +84,22 @@ class SensorViewSet(ModelViewSet):
         return ret
 
 
-class LogViewSet(ModelViewSet):
-    serializer_class = SensorLogSerializer
+class LogViewSet(RetrieveAPIView):
+    serializer_class = LogSerializer
     permission_classes = [
         IsAuthenticated,
     ]
     pagination_class = None
 
     def get_queryset(self):
-        last_90_days = timezone.now() - datetime.timedelta(days=90)
-        logs = models.Log.objects.filter(timestamp__gte=last_90_days)
-        return models.Sensor.objects.filter(
-            id=self.kwargs.get("sensor_pk")
-        ).prefetch_related(Prefetch("logs", queryset=logs))
+        return models.Log.objects.filter(sensor_id=self.kwargs.get("pk")).order_by(
+            "-id"
+        )[:30]
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 class DashboardDataAPIView(RetrieveAPIView):
